@@ -33,7 +33,7 @@ const $q = useQuasar()
 const router = useRouter();
 
 const email = ref('gonzaleztenreiro@gmail.com')
-const password = ref(null)
+const password = ref('Tq0xuxvBMs27042304()')
 const accept = ref(false)
 
 
@@ -55,7 +55,7 @@ const onSubmit = async () => {
         const store = useStoreUsers();
         try {
             await store.signIn({ email: email.value, password: password.value })
-            router.push('/admin');
+            router.push('/');
         } catch (error) {
             $q.notify({
                 color: 'red-5',
