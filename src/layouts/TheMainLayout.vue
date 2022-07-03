@@ -15,7 +15,7 @@
 
             <q-tabs align="left">
                 <q-route-tab to="/page1" label="Page One" />
-                <q-route-tab to="/page2" label="Page Two" />
+                <q-route-tab to="/sitemap" label="Mapa del sitio" />
                 <q-route-tab to="/about" label="Acerca de" />
             </q-tabs>
         </q-header>
