@@ -25,7 +25,7 @@
             {{ store.user?.email }}
             <!-- botón ejemplo -->
             <q-btn :loading="loading" color="primary" @click="simulateProgress()" style="width: 150px">
-                Button
+                Logout
                 <template v-slot:loading>
                     <q-spinner-hourglass class="on-left" />
                     Loading...
@@ -54,7 +54,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useStoreUsers } from 'src/stores/users';
+import { useRouter } from 'vue-router';
 const store = useStoreUsers();
+const router = useRouter();
 const rightDrawerOpen = ref(false)
 const loading = ref(false)
 const toggleRightDrawer = () => {
@@ -65,6 +67,7 @@ const simulateProgress = async () => {
         // we set loading state
         loading.value = true
         store.loginOut();
+        router.push('/');
     } catch (error) {
         console.log(error);
     } finally {

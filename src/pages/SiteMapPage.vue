@@ -2,13 +2,28 @@
     <q-page padding>
         <div class="q-pa-md row justify-center">
             <div class="col">
-                <h1 class="text-h5">
-                    Mapa del sitio {{ routes[0].children }}
-                </h1>
+                <div class="q-pa-md q-gutter-sm">
+                    <q-btn label="Ver routes.js" color="primary" @click="alert = true" />
+                    <q-dialog v-model="alert">
+                        <q-card>
+                            <q-card-section>
+                                <div class="text-h6">Ver routes.js</div>
+                            </q-card-section>
+
+                            <q-card-section class="q-pt-none">
+                                {{ routes[0].children }}
+                            </q-card-section>
+
+                            <q-card-actions align="right">
+                                <q-btn flat label="OK" color="primary" v-close-popup />
+                            </q-card-actions>
+                        </q-card>
+                    </q-dialog>
+                </div>
                 <q-list bordered separator>
                     <q-item v-for="(item, index) of routes[0].children" :key="index" clickable v-ripple>
                         <q-item-section @click="go(item?.path)">
-                            <q-item-label>{{ item?.name }}</q-item-label>
+                            <q-item-label>{{ item?.meta?.title ?? 'Inicio' }}</q-item-label>
                             <q-item-label caption>{{ item?.path }}</q-item-label>
                         </q-item-section>
                     </q-item>
@@ -21,7 +36,9 @@
 <script setup>
 import { routes } from '../router/routes'
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 const router = useRouter();
+const alert = ref(false);
 
 const go = route => {
     route = route.length ? route : '/';

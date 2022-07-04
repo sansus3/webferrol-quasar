@@ -3,12 +3,12 @@
 </template>
 
 <script setup>
-import { useStoreUsers } from './stores/users';
-const store = useStoreUsers();
+// import { useStoreUsers } from './stores/users';
+// const store = useStoreUsers();
 
-(async () => {
-  await store.onAuthState()
-})()
+// (async () => {
+//   await store.onAuthState()
+// })()
 
 // import { defineComponent } from 'vue'
 

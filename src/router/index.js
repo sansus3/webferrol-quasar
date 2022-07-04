@@ -33,11 +33,7 @@ export default route(async function (/* { store, ssrContext } */) {
    * @link https://quasar.dev/quasar-cli-vite/routing
    */
   Router.beforeEach((to, from, next) => {
-    // if (to.matched.some(record => record.meta.requireAuth) && !store.getters['auth/isSignedIn']) {
-    //   next({ name: 'account-signin', query: { next: to.fullPath } })
-    // } else {
-    //   next()
-    // }
+    window.document.title = to.meta.title ? to.meta.title : 'WebFerrol';
     if (to.meta.authRoute === true && store.user?.uid !== undefined) {
       next('/');
     } else {

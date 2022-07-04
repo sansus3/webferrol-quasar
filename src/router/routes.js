@@ -2,15 +2,21 @@
 export const routes = [
   {
     path: '/',
-    component: () => import('layouts/TheMainLayout.vue'),
+    component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'about', name: 'About', component: () => import('pages/AboutPage.vue') },
-      { path: 'sitemap', name: 'SiteMap', component: () => import('pages/SiteMapPage.vue') },
-      { path: 'sign-in', name: 'Acceso', meta: { authRoute: true }, component: () => import('pages/SignInPage.vue') },
+      { path: 'about', name: 'About', meta: { title: 'Acerca de' }, component: () => import('pages/AboutPage.vue') },
+      { path: 'sitemap', name: 'SiteMap', meta: { title: 'Mapa del sitio' }, component: () => import('pages/SiteMapPage.vue') },
+      { path: 'sign-in', name: 'Acceso', meta: { title: 'Login', authRoute: true }, component: () => import('pages/SignInPage.vue') },
     ]
   },
-
+  {
+    path: '/:admin(.*)*',
+    component: () => import('layouts/TheMainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/private/IndexPage.vue') },
+    ]
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

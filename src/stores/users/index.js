@@ -26,7 +26,7 @@ export const useStoreUsers = defineStore({
                 displayName: user.displayName,
                 photoURL: user.photoURL,
             }
-            //console.log(this.user)
+            console.log(user)
         },
         /**
          * Método que nos permite autentificar un usuario en la api 

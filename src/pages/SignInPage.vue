@@ -55,7 +55,7 @@ const onSubmit = async () => {
         const store = useStoreUsers();
         try {
             await store.signIn({ email: email.value, password: password.value })
-            router.push('/');
+            router.push('/admin');
         } catch (error) {
             $q.notify({
                 color: 'red-5',
