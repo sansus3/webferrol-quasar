@@ -35,7 +35,7 @@ export default route(async function (/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     window.document.title = to.meta.title ? to.meta.title : 'WebFerrol';
     if (to.meta.authRoute === true && store.user?.uid !== undefined) {
-      next('/');
+      next('/admin');
     } else {
       next();
     }

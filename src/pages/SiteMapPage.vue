@@ -22,7 +22,7 @@
                 </div>
                 <q-list bordered separator>
                     <q-item v-for="(item, index) of routes[0].children" :key="index" clickable v-ripple>
-                        <q-item-section @click="go(item?.path)">
+                        <q-item-section @click="handleRoute(item?.path)">
                             <q-item-label>{{ item?.meta?.title ?? 'Inicio' }}</q-item-label>
                             <q-item-label caption>{{ item?.path }}</q-item-label>
                         </q-item-section>
@@ -40,7 +40,7 @@ import { ref } from 'vue';
 const router = useRouter();
 const alert = ref(false);
 
-const go = route => {
+const handleRoute = route => {
     route = route.length ? route : '/';
     router.push(route);
 }
