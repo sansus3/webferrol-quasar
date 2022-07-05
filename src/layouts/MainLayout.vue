@@ -15,7 +15,7 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header>
-          WebFerrol
+          {{ $route.name }}
         </q-item-label>
 
         <EssentialLink v-for="link of essentialLinks" :key="link.name" :title="link.meta?.title ?? 'Home'"
