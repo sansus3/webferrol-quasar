@@ -12,10 +12,11 @@ export const routes = [
     ]
   },
   {
-    path: '/:admin(.*)*',
-    component: () => import('layouts/TheMainLayout.vue'),
+    path: '/admin(.*)*',
+    component: () => import('layouts/MainLayoutAdmin.vue'),
     children: [
-      { path: '', component: () => import('pages/private/IndexPage.vue') },
+      { path: '/admin', component: () => import('pages/private/IndexPage.vue') },
+      { path: '/admin/profile', component: () => import('pages/private/ProfilePage.vue') },
     ]
   },
   // Always leave this as last one,
