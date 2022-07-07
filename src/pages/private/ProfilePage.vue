@@ -1,31 +1,23 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
 
-    <q-form
-    
-      class="q-gutter-md"
-    >
-      <q-input
-        
-        v-model="store.user.email"
-        label="Cuenta de Usuario*"
-        :disable="true"
-      />
+    <q-form class="q-gutter-md">
+      <q-input v-model="store.user.email" label="Cuenta de Usuario*" :disable="true" />
 
-      
+      <q-input fill-mask="''" v-model.trim="store.user.displayName" filled label="Nombre"
+        hint="Nombre y apellidos del usuario" />
 
-     
 
-     
+
+
+
+
     </q-form>
 
 
-     <q-uploader
-        
-        style="max-width: 300px"
-        @uploaded="uploaded"
-        @failed="failed"
-      />
+    <div class="q-pa-md">
+      <q-uploader :factory="factoryFn" style="max-width: 300px" accept="image/jpeg" />
+    </div>
 
   </div>
 </template>
@@ -34,10 +26,8 @@
 import { useStoreUsers } from 'src/stores/users';
 const store = useStoreUsers();
 
-const uploaded = () => {
-    alert("jeje")
-}
-const failed = info => {
-    console.log(info);
+
+const factoryFn = (files) => {
+  console.log(files)
 }
 </script>

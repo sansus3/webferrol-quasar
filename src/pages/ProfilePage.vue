@@ -2,8 +2,10 @@
     <div class="q-pa-md">
         <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
             <div v-show="showSimulatedReturnData">
+
+
                 <q-carousel swipeable animated arrows v-model="slide" v-model:fullscreen="fullscreen" infinite>
-                    <q-carousel-slide v-for="file of store.portfolio" :key="file.index" :name="file.index" :img-src="file.url" />
+                    <q-carousel-slide v-for="file of files" :key="file.index" :name="file.index" :img-src="file.url" />
                     <template v-slot:control>
                         <q-carousel-control position="bottom-right" :offset="[18, 18]">
                             <q-btn push round dense color="white" text-color="primary"
@@ -21,16 +23,14 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia';
 import { useQuasar } from 'quasar';
-import { useStoreProfile } from 'src/stores/profile';
+import { listAllUrls } from '../storage';
 import { ref } from 'vue'
 const slide = ref(1);
 const fullscreen = ref(false)
 const files = ref([]);
 const showSimulatedReturnData = ref(true);
 const visible = ref(false);
-const store = useStoreProfile();
 
 const $q = useQuasar();
 
@@ -39,8 +39,8 @@ const $q = useQuasar();
     try {
         showSimulatedReturnData.value = false;
         visible.value = true;
-        files.value = await store.setPortfolio();
-        if (!store.portfolio.length)
+        files.value = await listAllUrls('proyectos');
+        if (!files.value.length)
             throw new Error("No se encontraron imágenes del Proyecto")
     } catch (error) {
         $q.notify({

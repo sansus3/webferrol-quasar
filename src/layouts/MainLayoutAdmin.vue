@@ -21,15 +21,48 @@
 
         <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
             <!-- drawer content -->
-            {{ store.user?.email }}
-            <!-- botón ejemplo -->
-            <q-btn :loading="loading" color="primary" @click="simulateProgress()" style="width: 150px">
-                Logout
-                <template v-slot:loading>
-                    <q-spinner-hourglass class="on-left" />
-                    Loading...
-                </template>
-            </q-btn>
+            <q-card class="my-card" flat bordered>
+                <q-item>
+                    <q-item-section avatar>
+                        <q-avatar>
+                            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                        </q-avatar>
+                    </q-item-section>
+
+                    <q-item-section>
+                        <q-item-label>Title</q-item-label>
+                        <q-item-label caption>
+                            {{ store.user?.email }}
+                        </q-item-label>
+                    </q-item-section>
+                </q-item>
+
+                <q-separator />
+
+                <q-card-section horizontal>
+                    <q-card-section>
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veritatis numquam nesciunt porro
+                        eveniet non vitae obcaecati doloribus natus eum consequuntur, rem voluptas autem maiores
+                        provident quisquam magnam nulla quasi placeat!
+                    </q-card-section>
+
+                    <q-separator vertical />
+
+                    <q-card-section class="col-4">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </q-card-section>
+                </q-card-section>
+                <q-separator />
+                <q-card-actions>
+                    <q-btn flat round icon="event" />
+                    <q-btn flat>
+                        7:30PM
+                    </q-btn>
+                    <q-btn @click="simulateProgress()" flat color="primary">
+                        Logout
+                    </q-btn>
+                </q-card-actions>
+            </q-card>
         </q-drawer>
 
         <q-page-container>
