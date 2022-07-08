@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="hHh lpR fFf">
+    <q-layout view="hHh lpR fFf" v-if="store.user">
         <q-header elevated class="bg-primary text-white" height-hint="98">
             <q-toolbar>
                 <q-toolbar-title>
@@ -25,40 +25,24 @@
                 <q-item>
                     <q-item-section avatar>
                         <q-avatar>
-                            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                            <img :src="store.user?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'">
                         </q-avatar>
                     </q-item-section>
 
                     <q-item-section>
-                        <q-item-label>Title</q-item-label>
+                        <q-item-label>{{ store.user?.displayName ?? '' }}</q-item-label>
                         <q-item-label caption>
-                            {{ store.user?.email }}
+                            {{ store.user?.email ?? '' }}
                         </q-item-label>
                     </q-item-section>
                 </q-item>
-
-                <q-separator />
-
-                <q-card-section horizontal>
-                    <q-card-section>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veritatis numquam nesciunt porro
-                        eveniet non vitae obcaecati doloribus natus eum consequuntur, rem voluptas autem maiores
-                        provident quisquam magnam nulla quasi placeat!
-                    </q-card-section>
-
-                    <q-separator vertical />
-
-                    <q-card-section class="col-4">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </q-card-section>
-                </q-card-section>
                 <q-separator />
                 <q-card-actions>
                     <q-btn flat round icon="event" />
                     <q-btn flat>
-                        7:30PM
+                        {{ store.getLastLoginAt ?? '' }}
                     </q-btn>
-                    <q-btn @click="simulateProgress()" flat color="primary">
+                    <q-btn @click="simulateProgress()" flat color="negative">
                         Logout
                     </q-btn>
                 </q-card-actions>

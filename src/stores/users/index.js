@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from "firebase/auth";
+import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
 
 export const useStoreUsers = defineStore({
@@ -25,6 +26,7 @@ export const useStoreUsers = defineStore({
                 uid: user.uid,
                 displayName: user.displayName,
                 photoURL: user.photoURL,
+                metadata: user.metadata,
             }
             //console.log(user)
         },
@@ -46,6 +48,26 @@ Autenticación de Firebase
         async loginOut() {
             await signOut(auth);
             this.user = null;
+        },
+        /**
+         * @description Updates a user's profile data.
+         * @param {Object} profile The profile's displayName and photoURL to update.
+         */
+        async onUpdateProfile(profile = { displayName, photoURL }) {
+            //console.log(profile)
+            await updateProfile(auth.currentUser, profile);
+            this.user = { ...this.user, ...profile };
+        },
+        /**
+         * Subida de fichero al Cloud Storage
+         * @param {Object} file 
+         */
+        async onUploadProfile(file) {
+            const reponse = await uploadBlobFile(file, 'profile/photo_profile');
+            const url = await getURL('profile/photo_profile');
+            const profile = { photoURL: url };
+            await this.onUpdateProfile(profile);
+            this.user = { ...this.user, ...profile };
         },
         /**
          * Método que nos permite recargar la propiedad "user" del state en caso de refrescar la página.
@@ -77,4 +99,10 @@ Autenticación de Firebase
             );
         }
     },
+    getters: {
+        getLastLoginAt: state => {
+            const date = new Date(Number(state.user.metadata.lastLoginAt));
+            return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        }
+    }
 });
