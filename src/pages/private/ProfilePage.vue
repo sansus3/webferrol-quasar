@@ -2,9 +2,9 @@
   <div class="q-pa-md" style="max-width: 400px">
 
     <q-form class="q-gutter-md">
-      <q-input v-model="store.user.email" label="Cuenta de Usuario*" :disable="true" />
+      <q-input v-model="store?.user?.email" label="Cuenta de Usuario*" :disable="true" />
 
-      <q-input fill-mask="''" v-model.trim="store.user.displayName" filled label="Nombre"
+      <q-input fill-mask="''" v-model.trim="store?.user?.displayName" filled label="Nombre"
         hint="Nombre y apellidos del usuario" />
 
 
