@@ -20,6 +20,8 @@
 
         <EssentialLink v-for="link of essentialLinks" :key="link.name" :title="link.meta?.title ?? 'Home'"
           :caption="link.name" :link="link?.path.length ? link?.path : '/'" :icon="link.meta?.icon ?? ''" />
+
+        <EssentialLink title="Admin" caption="Zona administrativa" link="/admin" />
       </q-list>
     </q-drawer>
 
