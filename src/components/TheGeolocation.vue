@@ -1,38 +1,42 @@
 <template>
-    <label for="latitud" class="form-label required">
-        Latitude
-        <span data-set="Campo obligatorio" class="text-danger">*</span>
-    </label>
-    <input id="latitud" required name="latitud" v-model.number="location.latitude" type="number" step="any"
-        placeholder="43.5060736" class="field__control form-control" />
-    <strong v-if="!location.latitude" class="alert alert-danger m-3" role="alert">Debe escoller unha latitude</strong>
+
+    <div class="field">
+        <label for="latitud" class="form-label required">
+            Latitude
+            <span data-set="Campo obligatorio" class="text-danger">*</span>
+        </label>
+        <input id="latitud" required name="latitud" v-model.number="location.latitude" type="number" step="any"
+            placeholder="43.5060736" class="field__control form-control" />
+        <strong v-if="!location.latitude" class="alert alert-danger" role="alert">Debe escoller unha
+            latitude</strong>
+    </div>
 
 
-    <label for="longitude" class="form-label required">
-        Lonxitude
-        <span data-set="Campo obligatorio" class="text-danger">*</span>
-    </label>
-    <input id="longitude" required name="longitude" v-model.number="location.longitude" step="any" type="number"
-        placeholder="-8.2051072" class="field__control form-control" />
-    <strong v-if="!location.longitude" class="alert alert-danger m-3" role="alert">Debe escoller unha lonxitude
-    </strong>
+    <div class="field">
+        <label for="longitude" class="form-label required">
+            Lonxitude
+            <span data-set="Campo obligatorio" class="text-danger">*</span>
+        </label>
+        <input id="longitude" required name="longitude" v-model.number="location.longitude" step="any" type="number"
+            placeholder="-8.2051072" class="field__control form-control" />
+        <strong v-if="!location.longitude" class="alert alert-danger" role="alert">Debe escoller unha lonxitude
+        </strong>
+    </div>
 
 
 
-    <input type="button" @click="onClickGetCoords" class="btn btn-primary mt-2"
+    <input type="button" @click="handleGetCoords" class="btn btn-primary"
         :value="loading ? 'Cargando...' : 'Reseteo ubicación'" :disabled="loading" />
 
-    <strong v-if="errorStr.length" class="alert alert-danger m-3" role="alert">
-        {{ errorStr }}
+    <strong v-if="error.error" class="alert alert-danger" role="alert">
+        ({{ error.code }}) {{ error.message }}
     </strong>
 </template>
 
 <script setup>
-
 //Deependencias
 import { ref, inject } from "vue";
-
-
+//Props
 const props = defineProps({
     google_maps_api_key: {
         type: String,
@@ -42,16 +46,19 @@ const props = defineProps({
 });
 
 /**
+ * Esta constante no la podemos utilizar en defineProps por el @error "error  Unexpected mutation of ..." debido a que las propiedades no son mutables o variables y en este caso la utilizamos con la directiva v-model. Por tanto nos decantamos por inject. Otra solución sería utilizar defineEmits o computed
  * @type {Object} location: { latitude: Number, longitude: Number }
- * @description Objeto con las propiedade de latitud y longitud para geolocalizar un elemento 
+ * @description Objeto con las propiedades de latitud y longitud para geolocalizar un elemento. Tiene que tener el formato descrito en el @type
  */
 const location = inject('location');
 
-let errorStr = ref("");
-let loading = ref(false);//loading para que el usuario sepa el tiempo de espera
-
-
-
+//Mensajes para información de errores y tiempo de espera
+const error = ref({
+    error: false,
+    code: null,
+    message: '',
+});
+let loading = ref(false);
 /**
  * Obtención de coordenadas a través del objeto navigator.geolocation
  * Utilizamos una promesa para garantizar la espera de los datos antes de una llamada que tenga que esperar los datos
@@ -71,6 +78,12 @@ const getCoords = async () => {
             resolve,
             reject,
             {
+                /**
+                 * @type {Number} maximumAge - A positive long value indicating the maximum age in milliseconds of a possible cached position that is acceptable to return. If set to 0, it means that the device cannot use a cached position and must attempt to retrieve the real current position. If set to Infinity the device must return a cached position regardless of its age. Default: 0.
+                 * @type {Number} timeout - A positive long value representing the maximum length of time (in milliseconds) the device is allowed to take in order to return a position.
+                 * @type {Boolean} enableHighAccuracy - A boolean value that indicates the application would like to receive the best possible results. If true and if the device is able to provide a more accurate position, it will do so.
+                 * @url https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+                 */
                 maximumAge: 60000,
                 timeout: 10000,
                 enableHighAccuracy: true
@@ -83,29 +96,24 @@ const getCoords = async () => {
     };
 }
 /**
- * Método que nos devuelve las coordenadas.
+ * Cargamos las coordenadas en el objeto reactivo pasado por el padre
+ * location {latidude,longitude}
  */
-const onClickGetCoords = async () => {
-    errorStr.value = '';
-    if (!window.navigator.geolocation) {
-        errorStr.value = "La Geolocalización no está disponible";
-        return;
-    }
+const handleGetCoords = async () => {
+    error.value.error = false;
+    loading.value = true;
     try {
-        loading.value = true;
+        if (!window.navigator.geolocation)
+            throw new Error('La Geolocalización no está disponible');
         // Coordenadas actuales
         let { lat, lng } = await getCoords();
         //Cargamos los valores del formulario
         location.latitude = lat;
         location.longitude = lng;
-
-        // if (marker && marker.position) {
-        //     let latlng = new google.maps.LatLng(lat, lng);
-        //     marker.setPosition(latlng);
-        // }
-
-    } catch (error) {
-        errorStr.value = error.message;
+    } catch (err) {
+        error.value.error = true;
+        error.value.code = err.code;
+        error.value.message = err.message;
     } finally {
         loading.value = false;
     }
