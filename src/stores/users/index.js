@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from "firebase/auth";
 import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
+import { date } from 'quasar';
 
 export const useStoreUsers = defineStore({
     id: 'users',
@@ -101,8 +102,12 @@ Autenticación de Firebase
     },
     getters: {
         getLastLoginAt: state => {
-            const date = new Date(Number(state.user.metadata.lastLoginAt));
-            return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+            const timeStamp = Number(state.user.metadata.lastLoginAt)
+            return date.formatDate(timeStamp, 'DD-MM-YYYY HH:mm:ss');
+        },
+        getLastSignInTime: state => {
+            const timeStamp = Number(state.user.metadata.lastSignInTime)
+            return date.formatDate(timeStamp, 'DD-MM-YYYY HH:mm:ss');
         }
     }
 });
