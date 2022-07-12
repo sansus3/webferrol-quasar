@@ -14,8 +14,8 @@
 
             <q-tabs align="left">
                 <q-route-tab to="/admin" label="Inicio" />
-                <q-route-tab to="/sitemap" label="Zona Pública" />
                 <q-route-tab to="/admin/profile" label="Perfil" />
+                <q-route-tab to="/sitemap" label="Zona Pública" />
             </q-tabs>
         </q-header>
 
@@ -24,7 +24,7 @@
             <q-card class="my-card" flat bordered>
                 <q-item>
                     <q-item-section avatar>
-                        <q-avatar>
+                        <q-avatar rounded>
                             <img :src="store.user?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'">
                         </q-avatar>
                     </q-item-section>
@@ -38,10 +38,10 @@
                 </q-item>
                 <q-separator />
                 <q-card-actions>
-                    <q-btn flat round icon="event" />
-                    <q-btn flat>
-                        {{ store.getLastLoginAt ?? '' }}
-                    </q-btn>
+                    <q-avatar flat icon="login" />
+                    <q-badge outline text-color="blue-grey-13">
+                        <span class="text-subtitle2">{{ store.getLastLoginAt ?? '' }}</span>
+                    </q-badge>
                     <q-btn @click="simulateProgress()" flat color="negative">
                         Logout
                     </q-btn>
