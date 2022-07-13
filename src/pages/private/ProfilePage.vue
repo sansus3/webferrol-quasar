@@ -7,15 +7,14 @@
           <q-input v-model.trim="store.user.displayName" filled label="Nombre" hint="Nombre y apellidos del usuario"
             lazy-rules :rules="[
             value => value.length > 3 || 'Introduzca por lo menos 4 caracteres']" />
-          <q-btn label="Actualizar" type="submit" color="primary" />
+          <q-btn :disable="disabled" label="Actualizar" type="submit" color="primary" />
         </q-form>
       </div>
     </div>
     <div class="col-12 col-sm-6 q-pa-md">
       <q-list>
         <q-item>
-          <q-uploader label="Foto de perfil" @finish="handleFinish" @failed="handleFailed" :factory="onUpload"
-            accept="image/jpeg" />
+          <q-uploader label="Foto de perfil" @failed="handleFailed" :factory="onUpload" accept="image/jpeg" />
 
         </q-item>
         <q-item>
@@ -33,13 +32,17 @@
 
 <script setup>
 import { useQuasar } from 'quasar';
+import { ref } from 'vue';
 import { useStoreUsers } from 'src/stores/users';
 const store = useStoreUsers();
 const $q = useQuasar();
+const disabled = ref(false);
+
 
 
 const onSubmit = async () => {
   try {
+    disabled.value = true;
     await store.onUpdateProfile({ displayName: store.user.displayName });
     $q.notify({
       color: 'green-5',
@@ -54,6 +57,8 @@ const onSubmit = async () => {
       icon: 'warning',
       message: `${error.message}`
     })
+  } finally {
+    disabled.value = false;
   }
 
 }
@@ -62,6 +67,12 @@ const onUpload = async (files) => {
   if (files) {
     try {
       await store.onUploadProfile(files[0]);
+      $q.notify({
+        color: 'green-5',
+        textColor: 'white',
+        icon: 'check',
+        message: `Foto de imagen subida`
+      })
     }
     catch (error) {
       $q.notify({
@@ -74,14 +85,7 @@ const onUpload = async (files) => {
   }
 }
 
-const handleFinish = () => {
-  $q.notify({
-    color: 'green-5',
-    textColor: 'white',
-    icon: 'check',
-    message: `Foto de imagen subida`
-  })
-}
+
 
 const handleFailed = error => {
   $q.notify({

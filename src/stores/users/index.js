@@ -64,8 +64,8 @@ Autenticación de Firebase
          * @param {Object} file 
          */
         async onUploadProfile(file) {
-            const reponse = await uploadBlobFile(file, 'profile/photo_profile');
-            const url = await getURL('profile/photo_profile');
+            const response = await uploadBlobFile(file, `profiles/${this.user.uid}`);
+            const url = await getURL(`profiles/${this.user.uid}`);
             const profile = { photoURL: url };
             await this.onUpdateProfile(profile);
             this.user = { ...this.user, ...profile };

@@ -37,15 +37,18 @@
                     </q-item-section>
                 </q-item>
                 <q-separator />
-                <q-card-actions>
-                    <q-avatar flat icon="login" />
-                    <q-badge outline text-color="blue-grey-13">
-                        <span class="text-subtitle2">{{ store.getLastLoginAt ?? '' }}</span>
-                    </q-badge>
-                    <q-btn @click="simulateProgress()" flat color="negative">
-                        Logout
-                    </q-btn>
-                </q-card-actions>
+                <q-item>
+                    <q-item-section>
+                        <q-badge outline text-color="blue-grey-13">
+                            <span class="q-pa-xs">{{ store.getLastLoginAt ?? '' }}</span>
+                        </q-badge>
+                    </q-item-section>
+                    <q-item-section>
+                        <q-btn @click="simulateProgress()" flat color="negative">
+                            Logout
+                        </q-btn>
+                    </q-item-section>
+                </q-item>
             </q-card>
         </q-drawer>
 
