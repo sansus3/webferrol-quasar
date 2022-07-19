@@ -1,6 +1,6 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
-import routes from './routes'
+import routes from '../router/routes'
 import { useStoreUsers } from 'src/stores/users'
 
 /*
@@ -34,11 +34,11 @@ export default route(async function (/* { store, ssrContext } */) {
    */
   Router.beforeEach((to, from, next) => {
     window.document.title = to.meta.title ? to.meta.title : 'WebFerrol';
-    if(to.meta.protectedRoute===true && store.user?.uid===undefined){
+    if (to.meta.protectedRoute === true && store.user?.uid === undefined) {
       next('/sign-in');
-    }else if(to.meta.authRoute===true && store.user?.uid!==undefined){
+    } else if (to.meta.authRoute === true && store.user?.uid !== undefined) {
       next('/');
-    }else{
+    } else {
       next();
     }
   })

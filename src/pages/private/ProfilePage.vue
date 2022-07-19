@@ -14,7 +14,8 @@
     <div class="col-12 col-sm-6 q-pa-md">
       <q-list>
         <q-item>
-          <q-uploader label="Foto de perfil" @failed="handleFailed" :factory="onUpload" accept="image/jpeg" />
+          <q-uploader :label="`Foto de perfil (max: ${maxFileSize} bytes)`" @failed="handleFailed"
+            @rejected="handleRejected" :factory="onUpload" accept="image/jpeg" :max-file-size="maxFileSize" />
 
         </q-item>
         <q-item>
@@ -35,11 +36,24 @@ import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import { useStoreUsers } from 'src/stores/users';
 const store = useStoreUsers();
+const maxFileSize = ref(150000);
 const $q = useQuasar();
 const disabled = ref(false);
 
+/**
+ * @description Emitted after files are picked and some do not pass the validation props (accept, max-file-size, max-total-size, filter, etc)
+ * @param {*} rejectedEntries 
+ */
+const handleRejected = rejectedEntries => {
+  $q.notify({
+    color: 'red-5',
+    textColor: 'white',
+    icon: 'warning',
+    message: `${rejectedEntries.length} imagen(es) no pasa(n) las restricciones: 1. Tamaño máximo (${maxFileSize.value} bytes)`
+  })
+}
 
-
+// Actualización del campo displayName del usuario Authentication de Firebase
 const onSubmit = async () => {
   try {
     disabled.value = true;
@@ -62,11 +76,14 @@ const onSubmit = async () => {
   }
 
 }
-
-const onUpload = async (files) => {
-  if (files) {
+// Subida de la foto de de usuario al Storage de firestore y guardando la ruta en Authentication
+const onUpload = (files) => {
+  if (files && files.length) {
     try {
-      await store.onUploadProfile(files[0]);
+      files.forEach(async file => {
+        await store.onUploadProfile(file);
+      });
+
       $q.notify({
         color: 'green-5',
         textColor: 'white',

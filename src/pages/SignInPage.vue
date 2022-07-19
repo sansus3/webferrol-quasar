@@ -28,19 +28,17 @@ import { useQuasar } from 'quasar'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { useStoreUsers } from 'src/stores/users';
+import { isValidEmail } from 'src/functions';
 
-const $q = useQuasar()
+const $q = useQuasar();
 const router = useRouter();
 
-const email = ref('gonzaleztenreiro@gmail.com')
-const password = ref('Tq0xuxvBMs27042304()')
-const accept = ref(false)
+const email = ref('gonzaleztenreiro@gmail.com');
+const password = ref('Tq0xuxvBMs27042304()');
+const accept = ref(false);
 
 
-const isValidEmail = () => {
-    const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-    return emailPattern.test(email.value) || 'Correo no válido';
-}
+
 
 const onSubmit = async () => {
     if (accept.value !== true) {

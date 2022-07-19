@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from "firebase/auth";
 import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
 import { date } from 'quasar';
@@ -40,6 +40,15 @@ Autenticación de Firebase
         async signIn({ email, password }) {
             //console.log(email,password)
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            this.setUser(userCredential.user);
+        },
+        /**
+         * Método que nos permite dar de alta en Firebase authentication un usuario vía email y conraseña
+         * @param {Object} Objeto con las propiedades string email y password
+         *  
+         */
+        async onCreateUserWithEmailAndPassword({ email, password }) {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             this.setUser(userCredential.user);
         },
         /**

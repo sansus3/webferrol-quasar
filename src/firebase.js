@@ -31,6 +31,7 @@ const storage = getStorage(firebaseApp);
 
 //Activación de persistencia cuando no haya conexión de red
 enableIndexedDbPersistence(db)
+  //.then(() => console.log('Todo ok'))
   .catch((err) => {
     if (err.code == 'failed-precondition') {
       // Multiple tabs open, persistence can only be enabled
