@@ -8,9 +8,34 @@ import { isValidEmail } from 'src/functions';
 const email = ref('');
 const password = ref('');
 const accept = ref(false);
+const loading = ref(false);
 const $q = useQuasar();
 const router = useRouter();
 
+const handleSendPasswordResetEmail = async () => {
+    try {
+        if (!email.value.length)
+            throw new Error('No hay correo seleccionado');
+
+
+        const store = useStoreUsers();
+        await store.onSendPasswordResetEmail(email.value);
+        $q.notify({
+            color: 'green-5',
+            textColor: 'white',
+            icon: 'warning',
+            message: `Sigue las instrucciones en tu correo ${email.value} para restablecer la contraseña.`
+        })
+    } catch (error) {
+        $q.notify({
+            color: 'red-5',
+            textColor: 'white',
+            icon: 'warning',
+            message: `${error.message}`
+        })
+    }
+
+}
 
 //Validación de formulario y en caso de éxito de acceso redirección
 const onSubmit = async () => {
@@ -66,7 +91,8 @@ const onReset = () => {
                     <q-btn label="Reseteo" type="reset" color="primary" flat class="q-ml-sm" />
                 </div>
             </q-form>
-
+            <q-btn class="q-mt-sm" @click="handleSendPasswordResetEmail" :loading="loading" flat style="color: #FF0080"
+                label="¿Olvidaste la contraseña?" />
         </div>
     </q-page>
 </template>

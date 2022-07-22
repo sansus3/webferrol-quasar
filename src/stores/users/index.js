@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, updatePassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, sendPasswordResetEmail, updatePassword, signOut } from "firebase/auth";
 import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
 import { date } from 'quasar';
@@ -92,6 +92,13 @@ Autenticación de Firebase
             const profile = { photoURL: url };
             await this.onUpdateProfile(profile);
             this.user = { ...this.user, ...profile };
+        },
+        /**
+         * Función para enviar un correo electrónico de restablecimiento de contraseña a un usuario
+         * @param {String} email 
+         */
+        async onSendPasswordResetEmail(email) {
+            await sendPasswordResetEmail(auth, email)
         },
         /**
          * Método que nos permite recargar la propiedad "user" del state en caso de refrescar la página.
