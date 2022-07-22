@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, updatePassword, signOut } from "firebase/auth";
 import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
 import { date } from 'quasar';
@@ -67,6 +67,20 @@ Autenticación de Firebase
             //console.log(profile)
             await updateProfile(auth.currentUser, profile);
             this.user = { ...this.user, ...profile };
+        },
+        /**
+         * Función que actualiza el correo de un ausuarion autentificado
+         * @param {String} email 
+         */
+        async onUpdateEmail(email) {
+            await updateEmail(auth.currentUser, email);
+        },
+        /**
+         * Función para cambiar la contraseña de usuario
+         * @param {String} password 
+         */
+        async onUpdatePassword(password) {
+            await updatePassword(auth.currentUser, password);
         },
         /**
          * Subida de fichero al Cloud Storage
