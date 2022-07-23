@@ -27,7 +27,7 @@
                 </q-input>
 
                 <div>
-                    <q-btn label="Acceder" type="submit" color="primary" />
+                    <q-btn label="Registro" type="submit" color="primary" />
                     <q-btn label="Reseteo" type="reset" color="primary" flat class="q-ml-sm" />
                 </div>
             </q-form>
@@ -39,42 +39,38 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useQuasar } from 'quasar';
+import { useNotify } from '../hooks/TheNotify';
 import { useStoreUsers } from 'src/stores/users';
 import { isValidEmail } from 'src/functions';
 
 const store = useStoreUsers();
 const router = useRouter();
-const $q = useQuasar();
+const { error } = useNotify();
 
+//Campos reactivos para la directiva v-model del formulario
 const form = ref({
-    email: 'homegoma@gmail.com',
+    email: '',
     password: '',
     passwordRepeat: '',
 });
 
-
+//Validación de que la constraseñas sean coincidentes
 const pass = value => {
     return value === form.value.password || 'Las contraseñas no coinciden'
 }
 
-
+//Registro de un Usuario nuevo (correo/contraseña)
 const handleSubmit = async () => {
     try {
         await store.onCreateUserWithEmailAndPassword(form.value);
         router.push({
             name: 'Admin'
         });
-    } catch (error) {
-        $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: error.message
-        });
-        //console.log(error)
+    } catch (err) {
+        error(err.message)
     }
 }
+//Reseteo  de los controles del formulario
 const handleReset = () => {
     form.value.email = '';
     form.value.password = '';
