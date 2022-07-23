@@ -1,66 +1,41 @@
 <script setup>
-import { useQuasar } from 'quasar'
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { useStoreUsers } from 'src/stores/users';
 import { isValidEmail } from 'src/functions';
+import { useNotify } from '../hooks/TheNotify';
 
 const email = ref('');
 const password = ref('');
 const accept = ref(false);
 const loading = ref(false);
-const $q = useQuasar();
 const router = useRouter();
+const { error, ok } = useNotify();
 
+//Envíamos un correo de Reseteo de password de email en caso de que no se acuerde de ella
 const handleSendPasswordResetEmail = async () => {
     try {
         if (!email.value.length)
             throw new Error('No hay correo seleccionado');
-
-
         const store = useStoreUsers();
         await store.onSendPasswordResetEmail(email.value);
-        $q.notify({
-            color: 'green-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: `Sigue las instrucciones en tu correo ${email.value} para restablecer la contraseña.`
-        })
-    } catch (error) {
-        $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: `${error.message}`
-        })
+        ok(`Sigue las instrucciones en tu correo ${email.value} para restablecer la contraseña.`);
+    } catch (err) {
+        error(err.message);
     }
-
 }
 
 //Validación de formulario y en caso de éxito de acceso redirección
 const onSubmit = async () => {
-    if (accept.value !== true) {
-        $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'Primero debe aceptar la licencia y los términos'
-        })
-    }
-    else {
-        const store = useStoreUsers();
-        try {
-            await store.signIn({ email: email.value, password: password.value })
-            router.push('/admin');
-        } catch (error) {
-            $q.notify({
-                color: 'red-5',
-                textColor: 'white',
-                icon: 'warning',
-                message: `${error.message}`
-            })
-        }
-
+    const store = useStoreUsers();
+    try {
+        if (accept.value !== true)
+            throw new Error('Primero debe aceptar la licencia y los términos');
+        await store.signIn({ email: email.value, password: password.value })
+        router.push('/admin');
+    } catch (err) {
+        error(err.message);
     }
 }
 //Limpieza de campos del formulario

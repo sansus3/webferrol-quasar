@@ -79,13 +79,14 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import { useStoreUsers } from 'src/stores/users';
 import { isValidEmail } from '../../functions';
+import { useNotify } from '../../hooks/TheNotify';
+
 const store = useStoreUsers();
+const { error, ok } = useNotify();
 const maxFileSize = ref(150000);
-const $q = useQuasar();
 const btnUpdateDisable = ref(false);
 const emailDisable = ref(false);
 const form = ref({
@@ -117,19 +118,9 @@ const handlePassword = async () => {
     if (!form.value.password.length)
       throw new Error('Debe introducir una contraseña nueva');
     await store.onUpdatePassword(form.value.password);
-    $q.notify({
-      color: 'green-5',
-      textColor: 'white',
-      icon: 'check',
-      message: `Cambio de contraseña realizada`
-    })
-  } catch (error) {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: `${error.message}`
-    })
+    ok(`Cambio de contraseña realizada`);
+  } catch (err) {
+    error(err.message);
   } finally {
     btnUpdateDisable.value = false;
   }
@@ -140,12 +131,7 @@ const handlePassword = async () => {
  * @param {*} rejectedEntries 
  */
 const handleRejected = rejectedEntries => {
-  $q.notify({
-    color: 'red-5',
-    textColor: 'white',
-    icon: 'warning',
-    message: `${rejectedEntries.length} imagen(es) no pasa(n) las restricciones: 1. Tamaño máximo (${maxFileSize.value} bytes)`
-  })
+  error(`${rejectedEntries.length} imagen(es) no pasa(n) las restricciones: 1. Tamaño máximo (${maxFileSize.value} bytes)`);
 }
 
 // Actualización del campo displayName del usuario Authentication de Firebase
@@ -167,19 +153,10 @@ const onSubmit = async () => {
       store.user.displayName = form.value.displayName;
       message = 'Nombre del perfil de usuario actualizado.';
     }
-    $q.notify({
-      color: 'green-5',
-      textColor: 'white',
-      icon: 'check',
-      message
-    })
-  } catch (error) {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: `${error.message}`
-    })
+    //Si todo va bien lo notificamos
+    ok(message);
+  } catch (err) {
+    error(err.message);
   } finally {
     btnUpdateDisable.value = false;
   }
@@ -192,33 +169,17 @@ const onUpload = (files) => {
       files.forEach(async file => {
         await store.onUploadProfile(file);
       });
-
-      $q.notify({
-        color: 'green-5',
-        textColor: 'white',
-        icon: 'check',
-        message: `Foto de imagen subida`
-      })
+      ok(`Foto de imagen subida`);
     }
-    catch (error) {
-      $q.notify({
-        color: 'red-5',
-        textColor: 'white',
-        icon: 'warning',
-        message: `${error.message}`
-      })
+    catch (err) {
+      error(err.message);
     }
   }
 }
 
 
-
-const handleFailed = error => {
-  $q.notify({
-    color: 'red-5',
-    textColor: 'white',
-    icon: 'warning',
-    message: `${error}`
-  })
+//Notificación de error en caso de algún tipo de fallo de subida de imagen
+const handleFailed = err => {
+  error(err.message);
 }
 </script>
