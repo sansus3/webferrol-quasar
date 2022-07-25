@@ -17,10 +17,12 @@
         <q-item-label header>
           {{ $route.name }}
         </q-item-label>
-
-        <EssentialLink v-for="link of essentialLinks" :key="link.name" :title="link.meta?.title ?? 'Home'"
-          :caption="link.name" :link="link?.path.length ? link?.path : '/'" :icon="link.meta?.icon ?? ''" />
-
+        <!-- v-if="link.meta?.authRoute" -->
+        <div v-for="link of essentialLinks" :key="link.name">
+          <EssentialLink v-if="!link.meta?.authRoute || (!store.user && link.meta?.authRoute)"
+            :title="link.meta?.title ?? 'Home'" :caption="link.name" :link="link?.path.length ? link?.path : '/'"
+            :icon="link.meta?.icon ?? ''" />
+        </div>
         <EssentialLink title="Admin" caption="Zona administrativa" link="/admin" />
       </q-list>
     </q-drawer>
@@ -35,7 +37,9 @@
 import { ref } from 'vue';
 import { routes } from '../router/routes'
 import EssentialLink from 'components/EssentialLink.vue'
+import { useStoreUsers } from '../stores/users';
 
+const store = useStoreUsers();
 const essentialLinks = [...routes[0].children];
 essentialLinks.shift();
 //console.log(essentialLinks)

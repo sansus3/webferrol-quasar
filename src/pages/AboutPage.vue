@@ -1,13 +1,12 @@
 <template>
     <q-page padding>
         <h1 class="text-h4 text-right q-mr-lg">Acerca de</h1>
-
+        <q-pagination v-if="max" input v-model="$current" :max="max" :boundary-links="false" direction-links />
         <div class="q-pa-md row items-start q-gutter-md">
-
             <q-card v-for="item of datos?.data" :key="item.id" dark bordered class="bg-grey-9 my-card">
                 <q-card-section>
                     <div class="text-h6">{{ item.title }}</div>
-                    <div class="text-subtitle2">{{ item.dateStart }}</div>
+                    <div class="text-subtitle2">{{ getDayMonthFullYear(item.dateEnd) }}</div>
                 </q-card-section>
 
                 <q-separator dark inset />
@@ -17,12 +16,12 @@
                 </q-card-section>
             </q-card>
         </div>
-        <q-pagination v-if="max" input v-model="$current" :max="max" :boundary-links="false" direction-links />
     </q-page>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
 import { useDB } from '../cloud.firestore';
+import { getDayMonthFullYear } from '../functions'
 const db = useDB('workExperience');
 const { initPage, nextPage, previousPage, totalPages } = db;
 const datos = ref(null);
