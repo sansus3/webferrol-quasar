@@ -18,7 +18,7 @@
                             <q-item-label>{{ item.code }}</q-item-label>
                         </q-item-section>
                     </q-list>
-                    <!-- <pre>{{ datos }}</pre> -->
+                    <!-- <pre>{{ datos.data }}</pre> -->
                 </q-card-section>
             </q-card>
         </div>
@@ -55,14 +55,18 @@ start()
 watch($current, async (current, prev) => {
     const barRef = bar.value;
     barRef.start()
-    //console.log(`watch => current: ${current} prev: ${prev}`);
-    if (current === 1) {
-        datos.value = await initPage('dateEnd', perPage);
+    try {
+        if (current === 1) {
+            datos.value = await initPage('dateEnd', perPage);
+        }
+        else if (current > prev)
+            datos.value = await nextPage('dateEnd', datos.value.last, perPage);
+        else
+            datos.value = await previousPage('dateEnd', datos.value.last, perPage);
+    } catch (error) {
+        console.log(error)
+    } finally {
+        barRef.stop()
     }
-    else if (current > prev)
-        datos.value = await nextPage('dateEnd', datos.value.last, perPage);
-    else
-        datos.value = await previousPage('dateEnd', datos.value.last, perPage);
-    barRef.stop()
 });
 </script>
