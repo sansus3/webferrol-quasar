@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, doc, setDoc, getDocs, query, orderBy, limit, startAfter, endBefore, limitToLast } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, getDoc, query, orderBy, limit, startAfter, endBefore, limitToLast } from "firebase/firestore";
 
 export const useDB = ($collection) => {
     /**
@@ -30,7 +30,7 @@ export const useDB = ($collection) => {
         const tam = $q.docs.length;
         if (tam) {
             tmp.data = $q.docs.map(doc => doc.data());
-            tmp.last = $q.docs[tam - 1];
+            tmp.last = $q.docs[tam - 1].id;
         }
         return tmp;
     }
@@ -46,15 +46,17 @@ export const useDB = ($collection) => {
             data: [],//Array de documentos a mostrar
             last: null,//Último documento de la lista anterior
         }
+        const docRef = doc(db, $collection, $last);
+        const docSnap = await getDoc(docRef);
         const $q = await getDocs(query(
             collection(db, $collection),
             orderBy($field),
-            startAfter($last),//Empiea a listar después del docSnap $last
+            startAfter(docSnap),//Empiea a listar después del docSnap $last
             limit($perPage)));
         const tam = $q.docs.length;
         if (tam) {
             tmp.data = $q.docs.map(doc => doc.data());
-            tmp.last = $q.docs[tam - 1];
+            tmp.last = $q.docs[tam - 1].id;
         }
         return tmp;
     }
@@ -70,15 +72,17 @@ export const useDB = ($collection) => {
             data: [],//Array de documentos a mostrar
             last: null,//Último documento de la listas anterior
         }
+        const docRef = doc(db, $collection, $last);
+        const docSnap = await getDoc(docRef);
         const $q = await getDocs(query(
             collection(db, $collection),
             orderBy($field),
-            endBefore($last),
+            endBefore(docSnap),
             limitToLast($perPage)));//limitToLast() a fin de establecer una cantidad máxima de elementos secundarios que se sincronicen en un evento determinado.
         const tam = $q.docs.length;
         if (tam) {
             tmp.data = $q.docs.map(doc => doc.data());
-            tmp.last = $q.docs[0];
+            tmp.last = $q.docs[0].id;
         }
         return tmp;
     }
