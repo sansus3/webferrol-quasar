@@ -15,6 +15,9 @@
             <q-tabs align="left">
                 <q-route-tab to="/admin" label="Inicio" />
                 <q-route-tab to="/admin/profile" label="Perfil" />
+                <q-route-tab :to="{
+                    name: 'NewRoom'
+                }" label="Nueva Sala" />
                 <q-route-tab to="/sitemap" label="Zona Pública" />
             </q-tabs>
         </q-header>
