@@ -52,6 +52,14 @@
                         </q-btn>
                     </q-item-section>
                 </q-item>
+                <!-- Menu -->
+                <q-list>
+                    <q-item-label header>
+                        Opciones
+                    </q-item-label>
+                    <EssentialLink title="Salas" caption="Ver salas" link="/admin/rooms" />
+                </q-list>
+                <!-- End Menu -->
             </q-card>
         </q-drawer>
 
@@ -77,6 +85,7 @@
 import { ref } from 'vue'
 import { useStoreUsers } from 'src/stores/users';
 import { useRouter } from 'vue-router';
+import EssentialLink from '../components/EssentialLink.vue';
 const store = useStoreUsers();
 const router = useRouter();
 const rightDrawerOpen = ref(false)

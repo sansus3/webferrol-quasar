@@ -1,11 +1,13 @@
 <script setup>
 import { reactive, ref } from 'vue';
-import { useStoreRooms } from '../../stores/rooms';
-import { useNotify } from '../../hooks/TheNotify';
+import { useRouter } from 'vue-router';
+import { useStoreRooms } from '../../../stores/rooms';
+import { useNotify } from '../../../hooks/TheNotify';
 const form = reactive({
     name: '',
     description: '',
 });
+const router = useRouter();
 const disable = ref(false);
 const store = useStoreRooms();
 const { error, ok } = useNotify();
@@ -14,6 +16,11 @@ const onSubmit = async () => {
         disable.value = true;
         await store.setRoom(form);
         ok('Sala creada de forma correcta')
+        setTimeout(() => {
+            router.push({
+                name: 'Rooms'
+            });
+        }, 1000);
     } catch (err) {
         error(err.message);
     } finally {
@@ -31,7 +38,7 @@ const onReset = () => {
                 Nueva Sala
             </h1>
             <div class="row justify-center">
-                <div class="col-6">
+                <div class="col-10 col-sm-6">
                     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
                         <q-input filled v-model="form.name" label="Sala *" hint="Nombre de la sala" lazy-rules
                             :rules="[val => val && val.length > 0 || 'Por favor escriba algo']" />
