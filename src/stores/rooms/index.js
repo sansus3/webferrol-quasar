@@ -15,57 +15,78 @@ export const useStoreRooms = defineStore({
         rooms: [],
         room: null,
         perPage: 3,
-        last:0,
-        max:0,
+        last: 0,
+        max: 0,
     }),
     actions: {
-        async setMax(){
-            const { totalPages } = useDB('rooms');
-            this.max = await totalPages(this.perPage);
+        /**
+         * 
+         * @param {String} idDoc Identificador de un documento del Cloud Firestore
+         * @returns //Document o False si no se encuentra
+         */
+        async getRoom(idDoc) {
+            const { getDocument } = useDB('rooms');
+            this.room = await getDocument(idDoc);
         },
         /**
-         * Listado de Salas/Rooms
+         * 
+         * @param {String} idDoc 
+         * @param {Object} data 
          */
-        async setRooms($state = 'init'){
+        async updateRoom(idDoc, data) {
+            const { updateDocument } = useDB('rooms');
+            await updateDocument(idDoc, data);
+        },
+        /**
+        * Función que carga en Cloud Firestore una nueva sala
+        * @param {Objeto} form Objeto con los datos de la nueva sala/room
+        */
+        async setRoom(form) {
+            const { setDocument } = useDB('rooms');
+            const store = useStoreUsers();
+            const data = { ...form, user: store.user.uid, displayName: store.user.displayName, photoURL: store.user.photoURL };
+            //console.log(data)
+            await setDocument(data);
+        },
+        /**
+         * Paginación de Salas/Rooms
+         */
+        async setRooms($state = 'init') {
             let pages = null;
-            switch($state){
+            switch ($state) {
                 case 'init':
                     const { initPage } = useDB('rooms');
                     pages = await initPage('createdAt', this.perPage);
-                    if(pages.data.length){
+                    if (pages.data.length) {
                         this.rooms = pages.data;
                         this.last = pages.last;
                     }
                     break;
-                    case 'next':
-                        const { nextPage } = useDB('rooms');
-                        pages = await nextPage('createdAt',this.last,this.perPage);
-                        if(pages.data.length){
-                            this.rooms = pages.data;
-                            this.last = pages.last;
-                        }
-                        break;
-                    case 'previous':
-                        const { previousPage } = useDB('rooms');
-                        pages = await previousPage('createdAt',this.last,this.perPage);
-                        if(pages.data.length){
-                            this.rooms = pages.data;
-                            this.last = pages.last;
-                        }
-                        break;
+                case 'next':
+                    const { nextPage } = useDB('rooms');
+                    pages = await nextPage('createdAt', this.last, this.perPage);
+                    if (pages.data.length) {
+                        this.rooms = pages.data;
+                        this.last = pages.last;
+                    }
+                    break;
+                case 'previous':
+                    const { previousPage } = useDB('rooms');
+                    pages = await previousPage('createdAt', this.last, this.perPage);
+                    if (pages.data.length) {
+                        this.rooms = pages.data;
+                        this.last = pages.last;
+                    }
+                    break;
             }
 
         },
         /**
-         * Función que carga en Cloud Firestore una nueva sala
-         * @param {Objeto} form Objeto con los datos de la nueva sala/room
+         * Total de página para la paginación
          */
-        async setRoom(form) {
-            const { setDocument } = useDB('rooms');
-            const store = useStoreUsers();
-            const data = { ...form, user: store.user.uid, displayName: store.user.displayName };
-            //console.log(data)
-            await setDocument(data);
+        async setMax() {
+            const { totalPages } = useDB('rooms');
+            this.max = await totalPages(this.perPage);
         },
     },
 });

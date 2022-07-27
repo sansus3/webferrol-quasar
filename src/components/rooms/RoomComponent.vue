@@ -1,7 +1,8 @@
 <script setup>
 defineProps({
     room: {
-        type: Object
+        type: Object,
+        required: true,
     }
 });
 </script>
@@ -10,7 +11,7 @@ defineProps({
         <q-item>
             <q-item-section avatar>
                 <q-avatar>
-                    <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                    <img :src="room?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'">
                 </q-avatar>
             </q-item-section>
 
@@ -29,5 +30,16 @@ defineProps({
                 <div v-html="room?.description"></div>
             </q-card-section>
         </q-card-section>
+        <q-separator />
+
+        <q-card-actions>
+            <q-btn flat :to="{
+                name: 'EditRoom',
+                params: {
+                    'idDoc': room?.idDoc
+                }
+            }">Editar</q-btn>
+            <q-btn flat>Eliminar</q-btn>
+        </q-card-actions>
     </q-card>
 </template>

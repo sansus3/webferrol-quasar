@@ -2,7 +2,7 @@
 import { watch, ref } from 'vue';
 import { useStoreRooms } from '../../../stores/rooms';
 import { useNotify } from '../../../hooks/TheNotify';
-import RoomComponent from '../../../components/RoomComponent.vue'
+import RoomComponent from '../../../components/rooms/RoomComponent.vue'
 
 const $current = ref(1);
 const store = useStoreRooms();
@@ -43,8 +43,7 @@ watch($current, async (current, prev) => {
                     direction-links />
                 <!-- End pagination -->
                 <div class="q-pa-md row items-start q-gutter-md">
-                    <room-component style="min-height: 9em;width:15em" v-for="room of store.rooms" :key="room.idDoc"
-                        :room="room">
+                    <room-component v-for="room of store.rooms" :key="room.idDoc" :room="room">
                     </room-component>
                 </div>
             </div>

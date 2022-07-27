@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, doc, setDoc, getDocs, getDoc, query, orderBy, limit, startAfter, endBefore, limitToLast } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, getDoc, updateDoc, query, orderBy, limit, startAfter, endBefore, limitToLast } from "firebase/firestore";
 
 export const useDB = ($collection) => {
     /**
@@ -11,6 +11,26 @@ export const useDB = ($collection) => {
         // Creamos una referencia de documento con un ID generado automáticamente
         const docRef = doc(collection(db, $collection));
         await setDoc(docRef, { idDoc: docRef.id, createdAt: Date.now(), ...$data });
+    }
+    /**
+     * 
+     * @param {String} $idDoc Identificador del documento
+     * @param {Objet} $objectData {property:value,property:value,...}
+     */
+    const updateDocument = async ($idDoc, $objectData) => {
+        await updateDoc(doc(db, $collection, $idDoc), $objectData);
+    }
+    /**
+     * @descrition Obtención de un documento de Cloud Firestore
+     * @param {String} $idDoc Identificador del documento de Cloud de Firestore
+     * @returns {Object|false} Objeto de datos di encuentra el documento o false si no hay resultados
+     */
+    const getDocument = async ($idDoc) => {
+        const docRef = doc(db, $collection, $idDoc);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists())
+            return docSnap.data();
+        return false;
     }
     /**
      * 
@@ -106,6 +126,8 @@ export const useDB = ($collection) => {
     }
     return {
         setDocument,
+        updateDocument,
+        getDocument,
         initPage,
         nextPage,
         previousPage,
