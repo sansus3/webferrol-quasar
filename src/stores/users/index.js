@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
+import { date } from 'quasar';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, sendPasswordResetEmail, updatePassword, signOut } from "firebase/auth";
 import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
-import { date } from 'quasar';
+import { useStoreRooms } from '../rooms';
 
 export const useStoreUsers = defineStore({
     id: 'users',
@@ -120,6 +121,8 @@ Autenticación de Firebase
                         } else {
                             // User is signed out
                             // ...
+                            const store = useStoreRooms();
+                            store.rooms = [];
                             this.loadingSession = false;
                             resolve(null);
                         }

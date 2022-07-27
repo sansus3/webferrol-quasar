@@ -36,6 +36,11 @@ export const useStoreRooms = defineStore({
         async updateRoom(idDoc, data) {
             const { updateDocument } = useDB('rooms');
             await updateDocument(idDoc, data);
+            const index = this.rooms.findIndex(room => room.idDoc === idDoc);
+            if (index > 0) {
+                this.rooms[index].name = data.name;
+                this.rooms[index].description = data.description;
+            }
         },
         /**
         * Función que carga en Cloud Firestore una nueva sala
@@ -47,46 +52,26 @@ export const useStoreRooms = defineStore({
             const data = { ...form, user: store.user.uid, displayName: store.user.displayName, photoURL: store.user.photoURL };
             //console.log(data)
             await setDocument(data);
+            this.rooms.push(data);
         },
-        /**
-         * Paginación de Salas/Rooms
-         */
-        async setRooms($state = 'init') {
-            let pages = null;
-            switch ($state) {
-                case 'init':
-                    const { initPage } = useDB('rooms');
-                    pages = await initPage('createdAt', this.perPage);
-                    if (pages.data.length) {
-                        this.rooms = pages.data;
-                        this.last = pages.last;
-                    }
-                    break;
-                case 'next':
-                    const { nextPage } = useDB('rooms');
-                    pages = await nextPage('createdAt', this.last, this.perPage);
-                    if (pages.data.length) {
-                        this.rooms = pages.data;
-                        this.last = pages.last;
-                    }
-                    break;
-                case 'previous':
-                    const { previousPage } = useDB('rooms');
-                    pages = await previousPage('createdAt', this.last, this.perPage);
-                    if (pages.data.length) {
-                        this.rooms = pages.data;
-                        this.last = pages.last;
-                    }
-                    break;
+        async deleteRoom(idDoc) {
+            const { deleteDocument } = useDB('rooms');
+            await deleteDocument(idDoc);
+            const index = this.rooms.findIndex(room => room.idDoc === idDoc);
+            if (index > -1) {
+                this.rooms.splice(index, 1);
             }
-
         },
         /**
-         * Total de página para la paginación
+         * Salas/Rooms
          */
-        async setMax() {
-            const { totalPages } = useDB('rooms');
-            this.max = await totalPages(this.perPage);
-        },
+        async setRooms() {
+            if (this.rooms.length)
+                return;
+            const { getDocsOrderBy } = useDB('rooms');
+            const data = await getDocsOrderBy('createdAt');
+            if (data)
+                this.rooms = data;
+        }
     },
 });

@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, doc, setDoc, getDocs, getDoc, updateDoc, query, orderBy, limit, startAfter, endBefore, limitToLast } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, getDoc, deleteDoc, updateDoc, query, orderBy, limit, startAfter, endBefore, limitToLast } from "firebase/firestore";
 
 export const useDB = ($collection) => {
     /**
@@ -30,6 +30,26 @@ export const useDB = ($collection) => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists())
             return docSnap.data();
+        return false;
+    }
+    /**
+     * 
+     * @param {String} $idDoc Referencia de un documento a eliminar
+     */
+    const deleteDocument = async $idDoc => {
+        await deleteDoc(doc(db, $collection, $idDoc));
+    }
+    /**
+     * @description Obtención de una colección de documentos
+     * @param {String} $field Campo por la que ordenar la query
+     * @returns {Array|Boolean} Array de objetos de la consulta o false si no encuentra nada
+     */
+    const getDocsOrderBy = async ($field) => {
+        const $q = await getDocs(query(
+            collection(db, $collection),
+            orderBy($field)));
+        if ($q.docs.length)
+            return $q.docs.map(doc => doc.data());
         return false;
     }
     /**
@@ -128,10 +148,12 @@ export const useDB = ($collection) => {
         setDocument,
         updateDocument,
         getDocument,
+        deleteDocument,
+        getDocsOrderBy,
         initPage,
         nextPage,
         previousPage,
         totalRecords,
         totalPages,
     }
-} 
+}
