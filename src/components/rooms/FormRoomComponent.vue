@@ -2,10 +2,13 @@
 import { inject } from 'vue';
 
 const emits = defineEmits(['onSubmit']);
-defineProps({
+const props = defineProps({
     btnSubmit: {
         type: String,
         default: 'Nueva Sala',
+    },
+    room: {
+        type: Object,
     }
 });
 
@@ -13,8 +16,8 @@ const form = inject('form');
 const disable = inject('disable');
 
 const onReset = () => {
-    form.name = '';
-    form.description = '';
+    form.name = props.room?.name ?? '';
+    form.description = props.room?.description ?? '';
 }
 
 const onSubmit = () => {
@@ -30,7 +33,7 @@ const onSubmit = () => {
         </div>
         <div>
             <q-btn :disable="disable" :label="btnSubmit" type="submit" color="primary" />
-            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+            <q-btn label="Reiniciar" type="reset" color="primary" flat class="q-ml-sm" />
         </div>
     </q-form>
 </template>

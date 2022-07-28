@@ -16,9 +16,8 @@
                 <q-route-tab to="/admin" label="Inicio" />
                 <q-route-tab to="/admin/profile" label="Perfil" />
                 <q-route-tab :to="{
-                    name: 'NewRoom'
-                }" label="Nueva Sala" />
-                <q-route-tab to="/sitemap" label="Zona Pública" />
+                    name: 'Rooms'
+                }" label="Salas" />
             </q-tabs>
         </q-header>
 
@@ -52,14 +51,6 @@
                         </q-btn>
                     </q-item-section>
                 </q-item>
-                <!-- Menu -->
-                <q-list>
-                    <q-item-label header>
-                        Opciones
-                    </q-item-label>
-                    <EssentialLink title="Salas" caption="Ver salas" link="/admin/rooms" />
-                </q-list>
-                <!-- End Menu -->
             </q-card>
         </q-drawer>
 
@@ -73,7 +64,7 @@
                     <q-avatar>
                         <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
                     </q-avatar>
-                    <div>Title</div>
+                    <div>WebFerrol</div>
                 </q-toolbar-title>
             </q-toolbar>
         </q-footer>

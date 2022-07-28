@@ -50,9 +50,7 @@ export const useStoreRooms = defineStore({
             const { setDocument } = useDB('rooms');
             const store = useStoreUsers();
             const data = { ...form, user: store.user.uid, displayName: store.user.displayName, photoURL: store.user.photoURL };
-            //console.log(data)
-            await setDocument(data);
-            this.rooms.push(data);
+            this.rooms.push(await setDocument(data));
         },
         async deleteRoom(idDoc) {
             const { deleteDocument } = useDB('rooms');

@@ -63,7 +63,7 @@ const onReset = () => {
 
                 <div>
                     <q-btn label="Acceder" type="submit" color="primary" />
-                    <q-btn label="Reseteo" type="reset" color="primary" flat class="q-ml-sm" />
+                    <q-btn label="Borrar" type="reset" color="primary" flat class="q-ml-sm" />
                 </div>
             </q-form>
             <q-btn class="q-mt-sm" @click="handleSendPasswordResetEmail" :loading="loading" flat style="color: #FF0080"

@@ -18,9 +18,12 @@ const { error } = useNotify();
 </script>
 <template>
     <q-page padding>
-        <h1 class="text-h4">
-            Rooms
-        </h1>
+
+        <div class="row justify-between items-center">
+            <h1 class="text-h4">Rooms</h1>
+            <q-btn to="/admin/new-room" color="primary" label="Nueva sala" />
+        </div>
+
         <div>
             <div v-if="store.rooms.length">
                 <!-- End pagination -->

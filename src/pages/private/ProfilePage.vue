@@ -50,7 +50,7 @@
           </q-input>
           <div>
             <q-btn :disable="btnUpdateDisable" label="Cambiar" type="submit" color="primary" />
-            <q-btn label="Reseteo" type="reset" color="primary" flat class="q-ml-sm" />
+            <q-btn label="Borrar" type="reset" color="primary" flat class="q-ml-sm" />
           </div>
         </q-form>
       </div>

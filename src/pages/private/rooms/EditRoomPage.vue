@@ -57,7 +57,8 @@ const onSubmit = async () => {
         <h1 class="text-h4">Editar Sala</h1>
         <div class="row justify-center">
             <div class="col-10 col-sm-6">
-                <form-room-component @on-submit="onSubmit" btn-submit="Editar Sala"></form-room-component>
+                <form-room-component :room="store.room" @on-submit="onSubmit" btn-submit="Editar Sala">
+                </form-room-component>
             </div>
         </div>
     </q-page>

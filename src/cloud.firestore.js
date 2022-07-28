@@ -6,11 +6,13 @@ export const useDB = ($collection) => {
      * @describe Insertamos un documento nuevo a una colección en Firestore
      * @param {String} $collection Ruta absoluta referida a una colección
      * @param {Object} $data Datos (propieda,valor) que se desean almacenar como docmento
+     * @return {Object} El objeto creado
      */
     const setDocument = async ($data = {}) => {
         // Creamos una referencia de documento con un ID generado automáticamente
         const docRef = doc(collection(db, $collection));
         await setDoc(docRef, { idDoc: docRef.id, createdAt: Date.now(), ...$data });
+        return { idDoc: docRef.id, createdAt: Date.now(), ...$data };
     }
     /**
      * 
