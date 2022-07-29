@@ -28,7 +28,8 @@ const { error } = useNotify();
             <div v-if="store.rooms.length">
                 <!-- End pagination -->
                 <div class="q-pa-md row items-start q-gutter-md">
-                    <room-component v-for="room of store.rooms" :key="room.idDoc" :room="room">
+                    <room-component v-for="room of store.rooms" :key="room.idDoc" :room="room"
+                        :btn-visible="store.uid === room.user">
                     </room-component>
                 </div>
             </div>

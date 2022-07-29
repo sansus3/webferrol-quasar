@@ -4,7 +4,7 @@ export const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', meta: { title: 'Inicio', icon: 'home' }, component: () => import('pages/IndexPage.vue') },
+      { path: '', name: 'Home', meta: { title: 'Inicio', icon: 'home' }, component: () => import('pages/IndexPage.vue') },
       { path: 'about', name: 'About', meta: { title: 'Acerca de', icon: 'info' }, component: () => import('pages/AboutPage.vue') },
       { path: 'profile', name: 'Profile', meta: { title: 'Proyectos', icon: 'photo_library' }, component: () => import('pages/ProfilePage.vue') },
       { path: 'sitemap', name: 'SiteMap', meta: { title: 'Mapa del sitio', icon: 'travel_explore' }, component: () => import('pages/SiteMapPage.vue') },

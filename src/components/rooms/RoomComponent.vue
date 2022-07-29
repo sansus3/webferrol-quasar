@@ -7,6 +7,10 @@ const props = defineProps({
     room: {
         type: Object,
         required: true,
+    },
+    btnVisible: {
+        type: Boolean,
+        default: false,
     }
 });
 const { error } = useNotify();
@@ -61,7 +65,7 @@ const onCopyToClipboard = async () => {
         </q-card-section>
         <q-separator />
 
-        <q-card-actions>
+        <q-card-actions v-if="btnVisible">
             <q-btn flat :to="{
                 name: 'EditRoom',
                 params: {

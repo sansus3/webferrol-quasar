@@ -56,7 +56,7 @@ const onSubmit = async () => {
     <q-page padding>
         <h1 class="text-h4">Editar Sala</h1>
         <div class="row justify-center">
-            <div class="col-10 col-sm-6">
+            <div class="col-10 col-sm-6" v-if="store.room">
                 <form-room-component :room="store.room" @on-submit="onSubmit" btn-submit="Editar Sala">
                 </form-room-component>
             </div>

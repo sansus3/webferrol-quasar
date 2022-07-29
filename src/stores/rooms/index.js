@@ -14,9 +14,7 @@ export const useStoreRooms = defineStore({
          */
         rooms: [],
         room: null,
-        perPage: 3,
-        last: 0,
-        max: 0,
+        uid: null,
     }),
     actions: {
         /**
@@ -26,7 +24,8 @@ export const useStoreRooms = defineStore({
          */
         async getRoom(idDoc) {
             const { getDocument } = useDB('rooms');
-            this.room = await getDocument(idDoc);
+            this.room = this.rooms.find(room => room.idDoc === idDoc);
+            this.room = this.room ?? await getDocument(idDoc);
         },
         /**
          * 
@@ -64,9 +63,11 @@ export const useStoreRooms = defineStore({
          * Salas/Rooms
          */
         async setRooms() {
-            if (this.rooms.length)
+            if (this.rooms.length > 1)
                 return;
             const { getDocsOrderBy } = useDB('rooms');
+            const store = useStoreUsers();
+            this.uid = store.user.uid;
             const data = await getDocsOrderBy('createdAt');
             if (data)
                 this.rooms = data;

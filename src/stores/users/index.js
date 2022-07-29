@@ -57,6 +57,8 @@ Autenticación de Firebase
          * @link https://firebase.google.com/docs/auth/web/password-auth?hl=es&authuser=0
          */
         async loginOut() {
+            const store = useStoreRooms();
+            store.rooms = [];
             await signOut(auth);
             this.user = null;
         },

@@ -6,7 +6,11 @@
                     <q-avatar>
                         <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
                     </q-avatar>
-                    WebFerrol
+                    <router-link style="text-decoration:none" class="text-white" :to="{
+                        name: 'Home',
+                    }">
+                        WebFerrol
+                    </router-link>
                 </q-toolbar-title>
 
                 <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
