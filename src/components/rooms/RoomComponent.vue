@@ -49,7 +49,18 @@ const onCopyToClipboard = async () => {
             </q-item-section>
 
             <q-item-section>
-                <q-item-label>{{ room?.name ?? 'Title' }}</q-item-label>
+                <q-item-label>
+                    <router-link class="text-blue-6 text-bold text-capitalize" style="text-decoration:none" :to="{
+                        name: 'Room',
+                        params: {
+                            idDoc: room.idDoc,
+                        }
+                    }">
+                        {{ room?.name ?? 'Title' }}
+                    </router-link>
+                </q-item-label>
+
+
                 <q-item-label caption>
                     {{ room?.displayName ?? 'Nombre perfil' }}
                 </q-item-label>

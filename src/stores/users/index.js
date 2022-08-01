@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthState
 import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
 import { useStoreRooms } from '../rooms';
+import { useStoreMessages } from '../messages';
 
 export const useStoreUsers = defineStore({
     id: 'users',
@@ -57,8 +58,10 @@ Autenticación de Firebase
          * @link https://firebase.google.com/docs/auth/web/password-auth?hl=es&authuser=0
          */
         async loginOut() {
-            const store = useStoreRooms();
-            store.rooms = [];
+            const storeRooms = useStoreRooms();
+            const storeMessages = useStoreMessages();
+            storeRooms.rooms = [];
+            storeMessages.handleMessagesListener();
             await signOut(auth);
             this.user = null;
         },

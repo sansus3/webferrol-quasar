@@ -20,6 +20,7 @@ export const routes = [
       { path: '/admin/profile', meta: { title: 'Perfil de usuario', icon: '', protectedRoute: true }, component: () => import('pages/private/ProfilePage.vue') },
       { path: '/admin/new-room', name: 'NewRoom', meta: { title: 'Crear sala', icon: '', protectedRoute: true }, component: () => import('pages/private/rooms/NewRoomPage.vue') },
       { path: '/admin/edit-room/:idDoc', name: 'EditRoom', meta: { title: 'Modificar sala', icon: '', protectedRoute: true }, component: () => import('pages/private/rooms/EditRoomPage.vue') },
+      { path: '/admin/room/:idDoc', name: 'Room', meta: { title: 'Sala', icon: '', protectedRoute: true }, component: () => import('pages/private/rooms/RoomPage.vue') },
       { path: '/admin/rooms', name: 'Rooms', meta: { title: 'Salas', icon: '', protectedRoute: true }, component: () => import('pages/private/rooms/RoomsListPage.vue') },
 
     ]
