@@ -18,8 +18,8 @@ const handleMessage = async () => {
 
         await store.createMessage({ idRoom: route.params.idDoc, message: message.value });
     } catch (err) {
-        //error(err.message);
-        console.log(err.message)
+        error(err.message);
+        //console.log(err.message)
     }
 
 }
@@ -38,7 +38,9 @@ const handleMessage = async () => {
 <template>
     <div class="q-pa-md row justify-center">
         <div style="width: 100%; max-width: 400px" v-if="store.messages.length">
-
+            <!-- <pre>
+                {{ store.messages }}
+            </pre> -->
             <q-chat-message :sent="item?.uid === storeUser.user.uid" v-for="(item, key) in store.messages" :key="key"
                 :name="item?.displayName ?? 'Anónimo'"
                 :avatar="item?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'" :text="[item?.message]" />

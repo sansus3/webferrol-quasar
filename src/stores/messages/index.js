@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { query, onSnapshot, collection, orderBy, doc, addDoc } from "firebase/firestore";
+import { query, onSnapshot, collection, orderBy, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useStoreUsers } from "../users";
 
@@ -34,13 +34,15 @@ export const useStoreMessages = defineStore({
         async getMessages($room) {
             //Accedemos a la subcolección messages
             const q = query(collection(db, `rooms/${$room}/messages`), orderBy('createdAt'));
-            this.messages = [];
             const unsubscribe = onSnapshot(q, (snapshot) => {
 
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === "added") {
-                        //console.log("New: ", change.newIndex, change.oldIndex, change.doc.data());
-                        this.messages.push(change.doc.data())
+                        const index = this.messages.findIndex(message => message.idDoc === change.doc.id);
+                        console.log(index)
+                        if (index === -1) {
+                            this.messages.push(change.doc.data());
+                        }
                     }
                     if (change.type === "modified") {
                         console.log("Modified: ", change.doc.data());
@@ -50,7 +52,6 @@ export const useStoreMessages = defineStore({
                         console.log("Removed: ", change.doc.data());
                     }
                 });
-                console.log(this.messages)
             });
 
             this.setMessagesListener(unsubscribe);
@@ -59,15 +60,19 @@ export const useStoreMessages = defineStore({
         //Añadimos esta conversación
         async createMessage({ idRoom, message }) {
             const store = useStoreUsers();
-            const docRef = await addDoc(collection(db, `rooms/${idRoom}/messages`), {
+            // Creamos una referencia de documento con un ID generado automáticamente
+            const docRef = doc(collection(db, `rooms/${idRoom}/messages`));
+            const data = {
+                idDoc: docRef.id,
                 idRoom,
                 message,
                 uid: store.user.uid,
                 displayName: store.user.displayName,
                 photoURL: store.user.photoURL,
                 createdAt: Date.now()
-            });
-            return docRef.id;
+            }
+            await setDoc(docRef, data);
+            return data;
         }
     },
 });
