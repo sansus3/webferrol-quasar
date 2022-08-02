@@ -17,12 +17,6 @@ export const useStoreMessages = defineStore({
         handleMessagesListener: () => { }
     }),
     actions: {
-        setMessages(messages) {
-            this.messages = messages;
-        },
-        setMessage(message) {
-            this.messages.push(message);
-        },
         setMessagesListener(listener) {
             if (listener)
                 this.handleMessagesListener = listener;

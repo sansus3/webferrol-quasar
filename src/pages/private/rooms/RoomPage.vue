@@ -36,38 +36,42 @@ const handleMessage = async () => {
 })()
 </script>
 <template>
-    <div class="q-pa-md row justify-center">
-        <div style="width: 100%; max-width: 400px" v-if="store.messages.length">
-            <!-- <pre>
+    <q-page padding>
+        <h1 class="text-h4">Sala de {{ storeUser.user.displayName }}</h1>
+        <div class="q-pa-md row justify-center">
+
+            <div style="width: 100%; max-width: 400px" v-if="store.messages.length">
+                <!-- <pre>
                 {{ store.messages }}
             </pre> -->
-            <q-chat-message :sent="item?.uid === storeUser.user.uid" v-for="(item, key) in store.messages" :key="key"
-                :name="item?.displayName ?? 'Anónimo'"
-                :avatar="item?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'" :text="[item?.message]" />
+                <q-chat-message :sent="item?.uid === storeUser.user.uid" v-for="(item, key) in store.messages"
+                    :key="key" :name="item?.displayName ?? 'Anónimo'"
+                    :avatar="item?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'" :text="[item?.message]" />
+            </div>
         </div>
-    </div>
-    <!-- Insert -->
-    <div class="q-pa-md">
-        <div class="cursor-pointer">
-            <q-chip square>
-                <q-avatar icon="bookmark" color="red" text-color="white" />
-                {{ click }}
-            </q-chip>
+        <!-- Insert -->
+        <div class="q-pa-md">
+            <div class="cursor-pointer">
+                <q-chip square>
+                    <q-avatar icon="bookmark" color="red" text-color="white" />
+                    {{ click }}
+                </q-chip>
 
-            <q-popup-edit v-model="message" :validate="val => val.length > 0" v-slot="scope">
-                <q-input autofocus dense v-model="scope.value" :model-value="scope.value" hint="Tu mensaje" :rules="[
-                    val => scope.validate(val) || 'More than 1 chars required'
-                ]">
-                    <template v-slot:after>
-                        <q-btn flat dense color="negative" icon="cancel" @click.stop.prevent="scope.cancel" />
+                <q-popup-edit v-model="message" :validate="val => val.length > 0" v-slot="scope">
+                    <q-input autofocus dense v-model="scope.value" :model-value="scope.value" hint="Tu mensaje" :rules="[
+                        val => scope.validate(val) || 'More than 1 chars required'
+                    ]">
+                        <template v-slot:after>
+                            <q-btn flat dense color="negative" icon="cancel" @click.stop.prevent="scope.cancel" />
 
-                        <q-btn flat dense color="positive" icon="check_circle" @click.stop.prevent="scope.set"
-                            @click="handleMessage"
-                            :disable="scope.validate(scope.value) === false || scope.initialValue === scope.value" />
-                    </template>
-                </q-input>
-            </q-popup-edit>
+                            <q-btn flat dense color="positive" icon="check_circle" @click.stop.prevent="scope.set"
+                                @click="handleMessage"
+                                :disable="scope.validate(scope.value) === false || scope.initialValue === scope.value" />
+                        </template>
+                    </q-input>
+                </q-popup-edit>
+            </div>
         </div>
-    </div>
-    <!-- End Insert -->
+        <!-- End Insert -->
+    </q-page>
 </template>
