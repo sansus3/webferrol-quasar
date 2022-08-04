@@ -23,20 +23,23 @@ export const useStoreMessages = defineStore({
             else
                 this.handleMessagesListener();
         },
+        setMessage($data) {
+            const index = this.messages.findIndex(message => message.idDoc === $data.idDoc);
+            if (index === -1) {
+                this.messages.push($data);
+            }
+        },
         //Getters cloud firestore
         //https://firebase.google.com/docs/firestore/query-data/listen
         async getMessages($room) {
-            //Accedemos a la subcolección messages
+            //Accedemos a la subcolección messages            
+            this.messages = [];
             const q = query(collection(db, `rooms/${$room}/messages`), orderBy('createdAt'));
             const unsubscribe = onSnapshot(q, (snapshot) => {
 
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === "added") {
-                        const index = this.messages.findIndex(message => message.idDoc === change.doc.id);
-                        console.log(index)
-                        if (index === -1) {
-                            this.messages.push(change.doc.data());
-                        }
+                        this.setMessage(change.doc.data())
                     }
                     if (change.type === "modified") {
                         console.log("Modified: ", change.doc.data());
@@ -66,6 +69,7 @@ export const useStoreMessages = defineStore({
                 createdAt: Date.now()
             }
             await setDoc(docRef, data);
+            this.setMessage(data);
             return data;
         }
     },
