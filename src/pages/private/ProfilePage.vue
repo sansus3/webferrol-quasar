@@ -157,6 +157,7 @@ const onSubmit = async () => {
     ok(message);
   } catch (err) {
     error(err.message);
+    console.log(err)
   } finally {
     btnUpdateDisable.value = false;
   }
@@ -173,6 +174,7 @@ const onUpload = (files) => {
     }
     catch (err) {
       error(err.message);
+      //console.log(err)
     }
   }
 }

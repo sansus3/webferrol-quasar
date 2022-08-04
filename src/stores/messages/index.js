@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { query, onSnapshot, collection, orderBy, doc, setDoc } from "firebase/firestore";
+import { query, where, onSnapshot, collection, collectionGroup, orderBy, doc, setDoc, getDocs, writeBatch } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useStoreUsers } from "../users";
 
@@ -71,6 +71,23 @@ export const useStoreMessages = defineStore({
             await setDoc(docRef, data);
             this.setMessage(data);
             return data;
+        },
+        /**
+         * 
+         * @param {String} $uid Identificador del usuario
+         * @param {Object} profile {displaName,photoURL}
+         * @param {*} $collection {Colección de firestore}
+         */
+        async updateProfileMessages($uid, profile, $collection = 'messages') {
+            const q = query(collectionGroup(db, $collection), where('uid', '==', $uid));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(async (doc) => {
+                // Get a new write batch
+                const batch = writeBatch(db);
+                batch.update(doc.ref, profile);
+                await batch.commit();
+            });
+
         }
     },
 });

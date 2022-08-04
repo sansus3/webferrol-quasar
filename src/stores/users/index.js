@@ -1,10 +1,6 @@
 import { defineStore } from 'pinia';
 import { date } from 'quasar';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, sendPasswordResetEmail, updatePassword, signOut } from "firebase/auth";
-
-import { db } from '../../firebase';
-import { collectionGroup, query, where, getDocs } from 'firebase/firestore';
-
 import { uploadBlobFile, getURL } from 'src/storage';
 import { auth } from '../../firebase';
 import { useStoreRooms } from '../rooms';
@@ -65,6 +61,7 @@ Autenticación de Firebase
             const storeRooms = useStoreRooms();
             const storeMessages = useStoreMessages();
             storeRooms.rooms = [];
+            storeMessages.messages = [];
             storeMessages.handleMessagesListener();
         },
         async loginOut() {
@@ -80,13 +77,10 @@ Autenticación de Firebase
             //console.log(profile)
             await updateProfile(auth.currentUser, profile);
             this.user = { ...this.user, ...profile };
-
-            const q = query(collectionGroup(db, 'rooms'), where('user', '==', this.user.uid));
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, ' => ', doc.data());
-            });
-
+            //Actualizamos mediante transacción bien el displayName o photURL de las Rooms o messages
+            const store = useStoreMessages();
+            await store.updateProfileMessages(this.user.uid, profile, 'rooms');
+            await store.updateProfileMessages(this.user.uid, profile, 'messages');
         },
         /**
          * Función que actualiza el correo de un ausuarion autentificado

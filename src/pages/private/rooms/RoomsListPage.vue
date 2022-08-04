@@ -29,7 +29,7 @@ const { error } = useNotify();
                 <!-- End pagination -->
                 <div class="q-pa-md row items-start q-gutter-md">
                     <room-component v-for="room of store.rooms" :key="room.idDoc" :room="room"
-                        :btn-visible="store.uid === room.user">
+                        :btn-visible="store.uid === room.uid">
                     </room-component>
                 </div>
             </div>
