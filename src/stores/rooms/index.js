@@ -51,7 +51,13 @@ export const useStoreRooms = defineStore({
             const data = { ...form, uid: store.user.uid, displayName: store.user.displayName, photoURL: store.user.photoURL };
             this.rooms.push(await setDocument(data));
         },
+        /**
+         * Función que elimina las colecciones room y sus mensajes de una determinada sala
+         * @param {String} idDoc Identificador de la sala o room
+         */
         async deleteRoom(idDoc) {
+            const { deleteCollectionGroup } = useDB(`messages`);
+            await deleteCollectionGroup('idRoom', idDoc);
             const { deleteDocument } = useDB('rooms');
             await deleteDocument(idDoc);
             const index = this.rooms.findIndex(room => room.idDoc === idDoc);

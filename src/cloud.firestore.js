@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, doc, setDoc, getDocs, getDoc, deleteDoc, updateDoc, query, orderBy, limit, startAfter, endBefore, limitToLast } from "firebase/firestore";
+import { collection, collectionGroup, doc, setDoc, getDocs, getDoc, deleteDoc, updateDoc, query, orderBy, where, limit, startAfter, endBefore, limitToLast, writeBatch } from "firebase/firestore";
 
 export const useDB = ($collection) => {
     /**
@@ -53,6 +53,22 @@ export const useDB = ($collection) => {
         if ($q.docs.length)
             return $q.docs.map(doc => doc.data());
         return false;
+    }
+    /**
+     * Función que elimina los documentos de una colección de tipo grupo
+     * @param {String} $field Campo donde establecer el where de la condición del búsqueda
+     * @param {*} $value Valor de la condición where
+     */
+    const deleteCollectionGroup = async ($field, $value) => {
+        const q = query(collectionGroup(db, $collection), where($field, '==', $value));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (doc) => {
+            // Get a new write batch
+            const batch = writeBatch(db);
+            batch.delete(doc.ref);
+            // Commit the batch
+            await batch.commit();
+        });
     }
     /**
      * 
@@ -152,6 +168,7 @@ export const useDB = ($collection) => {
         getDocument,
         deleteDocument,
         getDocsOrderBy,
+        deleteCollectionGroup,
         initPage,
         nextPage,
         previousPage,

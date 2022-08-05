@@ -1,16 +1,20 @@
 <script setup>
-import { ref } from 'vue';
+import { onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStoreMessages } from '../../../stores/messages';
 import { useNotify } from '../../../hooks/TheNotify';
 import { useStoreUsers } from '../../../stores/users';
 
 const message = ref('');
+const div_messages = ref(0);
+const height = ref(0);
 const click = ref('Nuevo mensaje')
 const route = useRoute();
 const store = useStoreMessages();
 const storeUser = useStoreUsers();
 const { error } = useNotify();
+
+
 
 
 const handleMessage = async () => {
@@ -23,6 +27,22 @@ const handleMessage = async () => {
     }
 
 }
+//Al abandonar la sala dejaremos de escuchar
+onUnmounted(() => {
+    const store = useStoreMessages();
+    store.setMessagesListener(null);
+});
+
+//Calculamos la altura para desplarnos hasta el último mensaje
+watch(div_messages, (oldVal, newVal) => {
+    window.scrollTo({
+        top: oldVal.scrollHeight,
+        behavior: 'smooth',
+    });
+    //console.log(oldVal.scrollHeight, newVal)
+});
+
+
 
 (async () => {
     try {
@@ -37,16 +57,18 @@ const handleMessage = async () => {
 </script>
 <template>
     <q-page padding>
-        <h1 class="text-h4">Sala de {{ storeUser.user.displayName }}</h1>
+        <h1 class="text-h4">Hola {{ storeUser.user.displayName }} 💘</h1>
         <div class="q-pa-md row justify-center">
 
-            <div style="width: 100%; max-width: 400px" v-if="store.messages.length">
+            <div v-if="store.messages.length" style="width: 100%; max-width: 400px;" ref="div_messages">
                 <!-- <pre>
                 {{ store.messages }}
             </pre> -->
-                <q-chat-message :sent="item?.uid === storeUser.user.uid" v-for="(item, key) in store.messages"
-                    :key="key" :name="item?.displayName ?? 'Anónimo'"
-                    :avatar="item?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'" :text="[item?.message]" />
+                <div v-for="(item, key) in store.messages" :key="key">
+                    <q-chat-message :sent="item?.uid === storeUser.user.uid" :name="item?.displayName ?? 'Anónimo'"
+                        :avatar="item?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'"
+                        :text="[item?.message]" />
+                </div>
             </div>
         </div>
         <!-- Insert -->
