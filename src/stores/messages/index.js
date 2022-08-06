@@ -14,14 +14,18 @@ export const useStoreMessages = defineStore({
          * @type {Array} portfolio - Rutas url de imágenes del bucket proyectos
          */
         messages: [],
-        handleMessagesListener: () => { }
+        handleMessagesListener: () => { } //Nuestro escuchador del método onSnapshot de firestore
     }),
     actions: {
+        /**
+         * 
+         * @param {Function} listener Evento capturado de onSnapshot de firestores
+         */
         setMessagesListener(listener) {
             if (listener)
                 this.handleMessagesListener = listener;
             else
-                this.handleMessagesListener();
+                this.handleMessagesListener(); //Si el método no recibe parámetro realizamos un Stop listening
         },
         setMessage($data) {
             const index = this.messages.findIndex(message => message.idDoc === $data.idDoc);
@@ -29,12 +33,15 @@ export const useStoreMessages = defineStore({
                 this.messages.push($data);
             }
         },
-        //Getters cloud firestore
-        //https://firebase.google.com/docs/firestore/query-data/listen
+        /**
+         * Obtenemos la sala seleccionada de la colección "rooms"
+         * @param {String} $room Identfificador de la sala
+         */
         async getMessages($room) {
             //Accedemos a la subcolección messages            
             this.messages = [];
             const q = query(collection(db, `rooms/${$room}/messages`), orderBy('createdAt'));
+            //https://firebase.google.com/docs/firestore/query-data/listen
             const unsubscribe = onSnapshot(q, (snapshot) => {
 
                 snapshot.docChanges().forEach((change) => {
@@ -50,9 +57,8 @@ export const useStoreMessages = defineStore({
                     }
                 });
             });
-
-            this.setMessagesListener(unsubscribe);
-            //this.handleMessagesListener();
+            //Almacenamos la llamada del método onSnapshot para poder después detener este listening cuando hagamos por ejemplo logout y ampliar nuestro ancho de banda
+            this.setMessagesListener(unsubscribe); //Lo almacenamos en la propiedad handleMessagesListener para ejecutralos sólo hay que ejecutar: this.handleMessagesListener();
         },
         //Añadimos esta conversación
         async createMessage({ idRoom, message }) {
