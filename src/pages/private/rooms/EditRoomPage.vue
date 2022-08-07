@@ -23,7 +23,7 @@ const { error, ok } = useNotify();
 const onSubmit = async () => {
     try {
         disable.value = true;
-        await store.updateRoom(store.room.idDoc, form);
+        await store.updateRoom(route.params.idDoc, form);
         ok('Sala actualizada');
     } catch (err) {
         error(err.message);

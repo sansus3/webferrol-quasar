@@ -10,7 +10,7 @@ const { error } = useNotify();
 //Carga previa
 (async () => {
     try {
-        await store.setRooms();
+        await store.getRooms();
     } catch (err) {
         error(err.message);
     }
@@ -20,7 +20,7 @@ const { error } = useNotify();
     <q-page padding>
 
         <div class="row justify-between items-center">
-            <h1 class="text-h4">Rooms</h1>
+            <h1 class="text-h4">Salas</h1>
             <q-btn to="/admin/new-room" color="primary" label="Nueva sala" />
         </div>
 

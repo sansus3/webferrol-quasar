@@ -17,19 +17,27 @@ export const useStoreUsers = defineStore({
          */
         user: null,
         /**
-         * Variable que se carga y descarga en el intervalo en que se carga la sesión del usuario para realizar acciones por ejemplo en TheMenu.vue
+         * @type {Object} Información: 1. sala está conectado; 2. cuándo se conectó por última vez.
+         */
+        meta: {},
+        /**
+         * Variable que se carga y descarga en el intervalo en que se carga la sesión del usuario para realizar acciones por ejemplo en TheMenu.vue para cargar información del usuario
          * @type {Boolean} loadingSession
          */
         loadingSession: false
     }),
     actions: {
+        /**
+         * Setter para cargar información de usuario
+         * @param {Object} user Objeto con datos el usuario
+         */
         setUser(user) {
             this.user = {
-                email: user.email,
-                uid: user.uid,
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-                metadata: user.metadata,
+                email: user?.email ?? '',
+                uid: user?.uid,
+                displayName: user?.displayName ?? 'Sin nombre de perfil',
+                photoURL: user?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png',
+                metadata: user?.metadata ?? '',
             }
             //console.log(user)
         },
@@ -134,7 +142,6 @@ Autenticación de Firebase
                         } else {
                             // User is signed out
                             // ...
-
                             this.loadingSession = false;
                             resolve(null);
                             this.unsubscribeRoom();

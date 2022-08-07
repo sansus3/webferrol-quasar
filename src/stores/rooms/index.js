@@ -18,14 +18,33 @@ export const useStoreRooms = defineStore({
     }),
     actions: {
         /**
+        * Salas/Rooms
+        */
+        async getRooms() {
+            if (this.rooms.length > 1)
+                return;
+            const { getDocsOrderBy } = useDB('rooms');
+            const store = useStoreUsers();
+            this.uid = store.user.uid;
+            const data = await getDocsOrderBy('createdAt');
+            if (data)
+                this.rooms = data;
+        },
+
+        /**
          * 
          * @param {String} idDoc Identificador de un documento del Cloud Firestore
          * @returns //Document o False si no se encuentra
          */
         async getRoom(idDoc) {
             const { getDocument } = useDB('rooms');
-            this.room = this.rooms.find(room => room.idDoc === idDoc);
-            this.room = this.room ?? await getDocument(idDoc);
+            const room = this.rooms.find(room => room.idDoc === idDoc);
+            if (room > -1)
+                this.room = room;
+            else {//Puede que no haya salas si se refresca la página
+                await this.getRooms();
+                this.room = this.rooms.find(room => room.idDoc === idDoc);
+            }
         },
         /**
          * 
@@ -36,7 +55,7 @@ export const useStoreRooms = defineStore({
             const { updateDocument } = useDB('rooms');
             await updateDocument(idDoc, data);
             const index = this.rooms.findIndex(room => room.idDoc === idDoc);
-            if (index > 0) {
+            if (index > -1) {
                 this.rooms[index].name = data.name;
                 this.rooms[index].description = data.description;
             }
@@ -65,18 +84,5 @@ export const useStoreRooms = defineStore({
                 this.rooms.splice(index, 1);
             }
         },
-        /**
-         * Salas/Rooms
-         */
-        async setRooms() {
-            if (this.rooms.length > 1)
-                return;
-            const { getDocsOrderBy } = useDB('rooms');
-            const store = useStoreUsers();
-            this.uid = store.user.uid;
-            const data = await getDocsOrderBy('createdAt');
-            if (data)
-                this.rooms = data;
-        }
     },
 });

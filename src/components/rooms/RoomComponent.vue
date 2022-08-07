@@ -44,7 +44,7 @@ const onCopyToClipboard = async () => {
         <q-item>
             <q-item-section avatar>
                 <q-avatar>
-                    <img :src="room?.photoURL ?? 'https://cdn.quasar.dev/img/boy-avatar.png'">
+                    <img :src="room?.photoURL ? room?.photoURL : 'https://cdn.quasar.dev/img/boy-avatar.png'">
                 </q-avatar>
             </q-item-section>
 
