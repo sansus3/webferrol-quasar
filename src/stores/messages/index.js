@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { query, where, onSnapshot, collection, collectionGroup, orderBy, doc, setDoc, getDocs, writeBatch } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useStoreUsers } from "../users";
+import { useStoreRooms } from "../rooms";
 
 export const useStoreMessages = defineStore({
     /**
@@ -93,6 +94,10 @@ export const useStoreMessages = defineStore({
                 batch.update(doc.ref, profile);
                 await batch.commit();
             });
+            if ($collection === 'rooms') {
+                const store = useStoreRooms();
+                store.rooms = [];
+            }
 
         }
     },

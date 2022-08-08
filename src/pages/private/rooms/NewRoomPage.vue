@@ -21,7 +21,7 @@ const { error, ok } = useNotify();
 const onSubmit = async () => {
     try {
         disable.value = true;
-        await store.setRoom(form);
+        await store.insertRoom(form);
         ok('Sala creada de forma correcta')
         setTimeout(() => {
             router.push({

@@ -16,15 +16,6 @@ export const useStoreUsers = defineStore({
          * @link https://firebase.google.com/docs/auth/web/manage-users?hl=es&authuser=0
          */
         user: null,
-        /**
-         * @type {Object} Información: 1. sala está conectado; 2. cuándo se conectó por última vez.
-         */
-        meta: {},
-        /**
-         * Variable que se carga y descarga en el intervalo en que se carga la sesión del usuario para realizar acciones por ejemplo en TheMenu.vue para cargar información del usuario
-         * @type {Boolean} loadingSession
-         */
-        loadingSession: false
     }),
     actions: {
         /**
@@ -141,8 +132,6 @@ Autenticación de Firebase
                             resolve(user)
                         } else {
                             // User is signed out
-                            // ...
-                            this.loadingSession = false;
                             resolve(null);
                             this.unsubscribeRoom();
                         }

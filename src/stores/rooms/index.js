@@ -61,10 +61,10 @@ export const useStoreRooms = defineStore({
             }
         },
         /**
-        * Función que carga en Cloud Firestore una nueva sala
+        * Función que inserta en Cloud Firestore una nueva sala
         * @param {Objeto} form Objeto con los datos de la nueva sala/room
         */
-        async setRoom(form) {
+        async insertRoom(form) {
             const { setDocument } = useDB('rooms');
             const store = useStoreUsers();
             const data = { ...form, uid: store.user.uid, displayName: store.user.displayName, photoURL: store.user.photoURL };

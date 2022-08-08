@@ -35,7 +35,7 @@ const bar = ref(null);
 const datos = ref(null);
 const max = ref(0);//Número de páginas máximas que hay
 const $current = ref(0);//página en la que nos encontramos actualmente
-const perPage = 4;
+const perPage = 2;
 
 //Datos imprescindibles al cargar la página
 const start = async () => {
