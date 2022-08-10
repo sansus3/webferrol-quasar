@@ -148,8 +148,7 @@ Autenticación de Firebase
             return date.formatDate(timeStamp, 'DD-MM-YYYY HH:mm:ss');
         },
         getLastSignInTime: state => {
-            const timeStamp = Number(state.user.metadata.lastSignInTime)
-            return date.formatDate(timeStamp, 'DD-MM-YYYY HH:mm:ss');
+            return state.user.metadata.lastSignInTime;
         }
     }
 });

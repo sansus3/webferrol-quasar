@@ -4,7 +4,7 @@
             <q-toolbar>
                 <q-toolbar-title>
                     <q-avatar>
-                        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+                        <img src="../assets/webferrol-logo.svg">
                     </q-avatar>
                     <router-link style="text-decoration:none" class="text-white" :to="{
                         name: 'Home',
@@ -66,7 +66,7 @@
             <q-toolbar>
                 <q-toolbar-title>
                     <q-avatar>
-                        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+                        <img src="../assets/webferrol-logo.svg">
                     </q-avatar>
                     <div>WebFerrol</div>
                 </q-toolbar-title>

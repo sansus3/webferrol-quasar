@@ -7,7 +7,6 @@ import { useStoreUsers } from '../../../stores/users';
 
 const message = ref('');
 const div_messages = ref(0);
-const height = ref(0);
 const click = ref('Nuevo mensaje')
 const route = useRoute();
 const store = useStoreMessages();
@@ -21,6 +20,7 @@ const handleMessage = async () => {
     try {
 
         await store.createMessage({ idRoom: route.params.idDoc, message: message.value });
+        message.value = '';
     } catch (err) {
         error(err.message);
         //console.log(err.message)

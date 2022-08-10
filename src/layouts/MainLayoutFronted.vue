@@ -26,12 +26,13 @@ const getFullYear = () => new Date().getFullYear();
                 }" flat round dense icon="admin_panel_settings" />
             </q-toolbar>
 
-            <q-tabs align="left">
+            <q-tabs inline-label align="left">
                 <!-- <q-tab name="images" label="Images" />
                 <q-tab name="videos" label="Videos" /> -->
                 <q-route-tab :to="{
-                    name: 'Rooms'
-                }" label="Salas" />
+                    name: 'Home'
+                }" icon="home" />
+                <q-route-tab :to="{ name: 'Rooms' }" label="Salas" />
             </q-tabs>
         </q-header>
 
@@ -41,7 +42,10 @@ const getFullYear = () => new Date().getFullYear();
 
         <q-footer bordered class="bg-grey-8 text-white">
             <q-toolbar>
-                <q-toolbar-title>
+                <q-toolbar-title class="row">
+                    <q-avatar>
+                        <img src="../assets/webferrol-logo.svg">
+                    </q-avatar>
                     <div class="text-subtitle1">WebFerrol © {{ getFullYear() }} por Xurxo González Tenreiro</div>
                 </q-toolbar-title>
             </q-toolbar>
