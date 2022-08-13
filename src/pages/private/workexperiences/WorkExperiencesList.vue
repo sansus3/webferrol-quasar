@@ -4,6 +4,7 @@ import { date } from 'quasar';
 import { copyToClipboard } from 'quasar'
 import { useNotify } from '../../../hooks/TheNotify';
 import { useStoreExperiences } from '../../../stores/experiences';
+import SkeletonTable from '../../../components/skeletons/SkeletonTable.vue';
 
 const store = useStoreExperiences();
 const { error, ok } = useNotify();
@@ -83,8 +84,9 @@ const onCopyToClipboard = async () => {
 })()
 </script>
 <template>
-    <div class="q-pa-md" v-if="store.experiences.length">
-        <q-table title="Experiencia laboral" :rows="store.getExperiencesOrderByDateStart" :columns="columns"
+    <div class="q-pa-md">
+        <skeleton-table v-if="!store.experiences.length"></skeleton-table>
+        <q-table v-else title="Experiencia laboral" :rows="store.getExperiencesOrderByDateStart" :columns="columns"
             row-key="title" :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected"
             :filter="filter">
             <!-- Options -->
