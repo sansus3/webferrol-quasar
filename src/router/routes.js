@@ -22,6 +22,9 @@ export const routes = [
       { path: '/admin/edit-room/:idDoc', name: 'EditRoom', meta: { title: 'Modificar sala', icon: '', protectedRoute: true }, component: () => import('pages/private/rooms/EditRoomPage.vue') },
       { path: '/admin/room/:idDoc', name: 'Room', meta: { title: 'Sala', icon: '', protectedRoute: true }, component: () => import('pages/private/rooms/RoomPage.vue') },
       { path: '/admin/rooms', name: 'Rooms', meta: { title: 'Salas', icon: '', protectedRoute: true }, component: () => import('pages/private/rooms/RoomsListPage.vue') },
+      //Experiencias laborales
+      { path: '/admin/work-experiences', name: 'WorkExperiences', meta: { title: 'Experiencia laboral', icon: '', protectedRoute: true }, component: () => import('pages/private/workexperiences/WorkExperiencesList.vue') },
+      { path: '/admin/new-experience', name: 'NewExperience', meta: { title: 'Nueva experiencia laboral', icon: '', protectedRoute: true }, component: () => import('pages/private/workexperiences/WorkExperienceNew.vue') },
 
     ]
   },

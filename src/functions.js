@@ -13,6 +13,7 @@ const isValidEmail = email => {
  * @param {Object} timestamp - new Timestamp ( seconds :  number ,  nanoseconds :  number ) : Timestamp. Este parámetro es de Firebase.
  * @returns {String} El método toDate de Firebase retorna "JavaScript Date object representing the same point in time as this Timestamp, with millisecond precision". Obtenemos el día, mes y año con cuatro dígitos.
  * @link https://firebase.google.com/docs/reference/node/firebase.firestore.Timestamp
+ * @link https://day.js.org/
  */
 const getDayMonthFullYear = (timestamp, separator = '/') => {
     if (!timestamp || typeof timestamp.toDate !== 'function') return '';

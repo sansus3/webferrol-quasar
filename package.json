@@ -1,8 +1,8 @@
 {
   "name": "webferrol-quasar",
   "version": "0.0.1",
-  "description": "Primera aplicación con el framework en Quasar",
-  "productName": "Webferrol App",
+  "description": "Programación y Diseño en aplicaciones WEB | WebFerrol",
+  "productName": "Programación Web | WebFerrol",
   "author": "webferrol <xurxo@webferrol.com>",
   "private": true,
   "scripts": {
