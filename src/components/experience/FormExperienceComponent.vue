@@ -1,30 +1,64 @@
 <script setup>
 import { ref } from 'vue';
 
-const form = ref(null);
-const codeRef = ref(null);
-const disable = ref(false);
-form.value = props.data;
+const form = ref({
+    code: '123456789',
+    title: '',
+    jobTitle: '',
+    dateStart: null,
+    dateEnd: null,
+    place: '',
+    province: '',
+    comments: '',
+});
+
+
 
 const props = defineProps({
     data: {
         type: Object,
+    },
+    btn: {
+        type: Object,
+        default: () => ({
+            text: 'Añadir',
+            icon: 'add',
+        })
+    },
+    disable: {
+        type: Boolean,
+        default: false,
     }
+
 });
-const emits = defineEmits(['onSubmit']);
+
+
+const setData = () => {
+    form.value.code = props.data?.code ?? '';
+    form.value.title = props.data?.title ?? '';
+    form.value.jobTitle = props.data?.jobTitle ?? '';
+    form.value.dateStart = props.data?.dateStart.toDate().toISOString().split('T')[0] ?? '';
+    form.value.dateEnd = props.data?.dateEnd.toDate().toISOString().split('T')[0] ?? '';
+    form.value.place = props.data?.place ?? '';
+    form.value.province = props.data?.province ?? '';
+    form.value.comments = props.data?.comments ?? '';
+}
+setData();//carga del formulario por defecto y reseto del mismo si se solicita
+
+
+const emits = defineEmits(['handleSubmit']);
 
 const handleSubmit = () => {
-    alert('hola')
-    emits('onSubmit', form)
+    emits('handleSubmit', form.value)
 }
 const handleReset = () => {
-
+    setData();
 }
 </script>
 <template>
     <div>
         <q-form autofocus @reset="handleReset" @submit.prevent="handleSubmit">
-            <q-input label="Código *" ref="codeRef" v-model="form.code" name="code"
+            <q-input label="Código *" v-model="form.code" name="code"
                 :rules="[val => val && val.length > 2 || 'Por lo un mínimo de tres caracteres']">
                 <template v-if="form.code" v-slot:append>
                     <q-icon name="cancel" @click.stop.prevent="form.code = null" class="cursor-pointer" />
@@ -74,7 +108,8 @@ const handleReset = () => {
             </div>
 
             <q-btn-group push class="q-mt-xl">
-                <q-btn icon="add" :loading="disable" :disable="disable" label="Crear" type="submit" color="primary" />
+                <q-btn :icon="btn.icon" :loading="disable" :disable="disable" :label="btn.text" type="submit"
+                    color="primary" />
                 <q-btn icon="restart_alt" label="Reiniciar" type="reset" color="secondary" />
             </q-btn-group>
         </q-form>

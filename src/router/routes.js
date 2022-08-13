@@ -25,6 +25,7 @@ export const routes = [
       //Experiencias laborales
       { path: '/admin/work-experiences', name: 'WorkExperiences', meta: { title: 'Experiencia laboral', icon: '', protectedRoute: true }, component: () => import('pages/private/workexperiences/WorkExperiencesList.vue') },
       { path: '/admin/new-experience', name: 'NewExperience', meta: { title: 'Nueva experiencia laboral', icon: '', protectedRoute: true }, component: () => import('pages/private/workexperiences/WorkExperienceNew.vue') },
+      { path: '/admin/edit-experience/:idDoc', name: 'EditExperience', meta: { title: 'Modificar experiencia', icon: '', protectedRoute: true }, component: () => import('pages/private/workexperiences/WorkExperienceEdit.vue') },
 
     ]
   },

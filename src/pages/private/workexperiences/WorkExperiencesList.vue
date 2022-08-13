@@ -125,7 +125,11 @@ const onCopyToClipboard = async () => {
                         {{ props.row.province }}
                     </q-td>
                     <q-td>
-                        <q-btn @click="handleEdit()" class="q-mr-xs" color="primary" size="sm" label="boton" />
+                        <q-btn :to="{
+                            name: 'EditExperience', params: {
+                                idDoc: props.row.idDoc
+                            }
+                        }" class="q-mr-xs" color="primary" size="sm" label="Modificar" />
                         <q-btn @click="handleDelete(props.row)" color="negative" size="sm" label="Eliminar" />
                     </q-td>
                 </q-tr>
