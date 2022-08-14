@@ -11,6 +11,11 @@ const form = ref({
     province: '',
     comments: '',
 });
+const toolbar = [
+    ['left', 'center', 'right', 'justify'],
+    ['bold', 'italic', 'underline'],
+    ['token', 'hr', 'link', 'custom_btn'],
+]
 
 
 
@@ -103,8 +108,8 @@ const handleReset = () => {
             </datalist>
 
             <div class="q-mt-xl">
-                <q-editor placeholder="Unos breves comentarios" content-class="bg-amber-3" v-model="form.comments"
-                    min-height="5rem" />
+                <q-editor :toolbar="toolbar" placeholder="Unos breves comentarios" content-class="bg-amber-3"
+                    v-model="form.comments" min-height="5rem" />
             </div>
 
             <q-btn-group push class="q-mt-xl">

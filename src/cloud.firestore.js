@@ -44,7 +44,7 @@ export const useDB = ($collection) => {
     /**
      * @description Obtención de una colección de documentos
      * @param {String} $field Campo por la que ordenar la query
-     * @returns {Array|Boolean} Array de objetos de la consulta o false si no encuentra nada
+     * @returns {Array} Array de objetos de la consulta o false si no encuentra nada
      */
     const getDocsOrderBy = async ($field) => {
         const $q = await getDocs(query(
@@ -52,7 +52,7 @@ export const useDB = ($collection) => {
             orderBy($field)));
         if ($q.docs.length)
             return $q.docs.map(doc => doc.data());
-        return false;
+        return [];
     }
     /**
      * Función que elimina los documentos de una colección de tipo grupo

@@ -77,21 +77,24 @@ const onCopyToClipboard = async () => {
 
 (async () => {
     try {
+        loading.value = true;
         await store.getExperiences();
     } catch (error) {
-        console.log(error)
+        error(err);
+    } finally {
+        loading.value = false;
     }
 })()
 </script>
 <template>
     <div class="q-pa-md">
-        <skeleton-table v-if="!store.experiences.length"></skeleton-table>
-        <q-table v-else title="Experiencia laboral" :rows="store.getExperiencesOrderByDateStart" :columns="columns"
-            row-key="title" :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected"
-            :filter="filter">
+        <skeleton-table v-if="loading"></skeleton-table>
+        <q-table v-else title="Experiencia laboral" :rows="store.getExperiencesOrderByDateStart"
+            :pagination="{ rowsPerPage: 20 }" :columns="columns" row-key="title"
+            :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected" :filter="filter">
             <!-- Options -->
             <template v-slot:top>
-                <q-btn color="primary" :disable="loading" label="Nueva Experiencia" :to="{ name: 'NewExperience' }" />
+                <q-btn color="primary" label="Nueva Experiencia" :to="{ name: 'NewExperience' }" />
                 <q-space />
                 <q-input borderless dense debounce="300" color="primary" v-model="filter">
                     <template v-slot:append>

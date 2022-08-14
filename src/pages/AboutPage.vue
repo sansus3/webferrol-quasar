@@ -5,18 +5,52 @@
         <div class="q-pa-md row items-start q-gutter-md">
             <q-card v-for="item of datos?.data" :key="item.id" bordered>
                 <q-card-section class="bg-primary text-white">
-                    <div class="text-h6">{{ item.title }}</div>
-                    <div class="text-subtitle2">{{ getDayMonthFullYear(item.dateEnd) }}</div>
+                    <q-list>
+                        <q-item>
+                            <q-item-section>
+                                <q-item-label><span class="text-subtitle1">{{ item.title
+                                }}</span></q-item-label>
+                            </q-item-section>
+                            <q-item-section side top>
+                                <q-badge color="orange" :label="getDayMonthFullYear(item.dateStart)">
+                                </q-badge>
+                            </q-item-section>
+                        </q-item>
+                        <q-item>
+                            <q-item-section>
+                                <q-item-label><span class="text-subtitle2">{{ item.code }}</span></q-item-label>
+                            </q-item-section>
+                        </q-item>
+                    </q-list>
                 </q-card-section>
 
                 <q-card-section>
                     <q-list>
-                        <q-item-section>
-                            <q-item-label>{{ item.title }}</q-item-label>
-                            <q-item-label>{{ item.place }}</q-item-label>
-                            <q-item-label>{{ item.jobTitle }}</q-item-label>
-                            <q-item-label>{{ item.code }}</q-item-label>
-                        </q-item-section>
+                        <q-item>
+                            <q-item-section>
+                                <q-item-label>Lugar</q-item-label>
+                                <q-item-label caption>{{ item.place }}</q-item-label>
+                            </q-item-section>
+                            <q-item-section side top>
+                                <q-badge color="teal" :label="item.province">
+                                    <q-icon name="location_on" size="14px" class="q-ml-xs" />
+                                </q-badge>
+                            </q-item-section>
+                        </q-item>
+                        <q-separator spaced inset></q-separator>
+                        <q-item>
+                            <q-item-section>
+                                <q-item-label>Puesto</q-item-label>
+                                <q-item-label caption>{{ item.jobTitle }}</q-item-label>
+                            </q-item-section>
+                        </q-item>
+                        <q-separator spaced inset></q-separator>
+                        <q-item>
+                            <q-item-section>
+                                <div class="text-body1" v-html="item.comments"></div>
+                            </q-item-section>
+                        </q-item>
+
                     </q-list>
                     <!-- <pre>{{ datos.data }}</pre> -->
                 </q-card-section>
