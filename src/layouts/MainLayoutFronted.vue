@@ -46,7 +46,8 @@ const getFullYear = () => new Date().getFullYear();
                     <q-avatar>
                         <img src="../assets/webferrol-logo.svg">
                     </q-avatar>
-                    <div class="text-subtitle1">WebFerrol © {{ getFullYear() }} por <router-link :to="{ name: 'About' }">
+                    <div class="text-subtitle1">WebFerrol © {{ getFullYear() }} por <router-link class="light-blue-4"
+                            :to="{ name: 'About' }">
                             Xurxo González Tenreiro</router-link>
                     </div>
                 </q-toolbar-title>
@@ -55,3 +56,11 @@ const getFullYear = () => new Date().getFullYear();
 
     </q-layout>
 </template>
+<style lang="scss" scoped>
+footer {
+    a {
+        color: $yellow-3;
+        text-decoration: none;
+    }
+}
+</style>

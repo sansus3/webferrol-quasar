@@ -68,6 +68,8 @@ const onReset = () => {
             </q-form>
             <q-btn class="q-mt-sm" @click="handleSendPasswordResetEmail" :loading="loading" flat style="color: #FF0080"
                 label="¿Olvidaste la contraseña?" />
+            <q-btn class="q-mt-sm" :to="{ name: 'Register' }" flat style="color: #FF0080"
+                label="Regístrate como nuevo usuario" />
         </div>
     </q-page>
 </template>
