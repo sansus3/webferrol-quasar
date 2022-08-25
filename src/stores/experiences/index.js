@@ -16,9 +16,7 @@ export const useStoreExperiences = defineStore({
             this.experiences = await getDocsOrderBy('dateStart');
         },
         async setupExperience(p_idDoc) {
-            this.experience = this.experiences.find(el => el.idDoc === p_idDoc);
-            if (this.experience)
-                return;
+            this.experience = null; //Vacíamos por si tenía datos previos
             const { getDocument } = useDB('workExperience');
             this.experience = await getDocument(p_idDoc);
         },

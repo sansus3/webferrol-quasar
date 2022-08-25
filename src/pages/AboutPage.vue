@@ -66,6 +66,9 @@ import { ref, watch } from 'vue';
 import { useDB } from '../cloud.firestore';
 import { getDayMonthFullYear } from '../functions'
 import SkeletonCard from '../components/skeletons/SkeletonCard.vue';
+import { useHookMeta } from '../hooks/SEO.hook';
+
+useHookMeta('Experiencia Laboral', 'Experiencia laboral de Xurxo González Tenreiro sobre todo en el ámbito de la educación del Diseño WEB', 'programación, diseño web, educación');
 
 const db = useDB('workExperience');
 const { initPage, nextPage, previousPage, totalPages } = db;

@@ -32,7 +32,7 @@ const getFullYear = () => new Date().getFullYear();
                 <q-route-tab :to="{
                     name: 'Home'
                 }" icon="home" />
-                <q-route-tab :to="{ name: 'Rooms' }" label="Salas" />
+                <q-route-tab :to="{ name: 'About' }" label="Experiencia" />
             </q-tabs>
         </q-header>
 
@@ -46,9 +46,8 @@ const getFullYear = () => new Date().getFullYear();
                     <q-avatar>
                         <img src="../assets/webferrol-logo.svg">
                     </q-avatar>
-                    <div class="text-subtitle1">WebFerrol © {{ getFullYear() }} por <router-link class="light-blue-4"
-                            :to="{ name: 'About' }">
-                            Xurxo González Tenreiro</router-link>
+                    <div class="text-subtitle1">WebFerrol © {{ getFullYear() }} por
+                        Xurxo González Tenreiro
                     </div>
                 </q-toolbar-title>
             </q-toolbar>
