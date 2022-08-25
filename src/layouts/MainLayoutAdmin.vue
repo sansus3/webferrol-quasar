@@ -20,8 +20,8 @@
                 <q-route-tab to="/admin" label="Inicio" />
                 <q-route-tab to="/admin/profile" label="Perfil" />
                 <q-route-tab :to="{
-                    name : 'WorkExperiences'
-                }" label="Experiencias laborales"></q-route-tab>
+                    name: 'WorkExperiences'
+                }" label="Experiencia laboral"></q-route-tab>
                 <q-route-tab :to="{
                     name: 'Rooms'
                 }" label="Salas" />
