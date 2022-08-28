@@ -22,7 +22,7 @@ const form = ref(null); //Almacenaremos los datos del store
 const handleSubmit = async () => {
     try {
         disable.value = true;
-        await store.updateExperience({ ...store.experience, ...form.value });//Hacemos el famoso Spread {...object}
+        await store.updateExperience(route.params.idDoc, { ...store.experience, ...form.value });//Hacemos el famoso Spread {...object}
     } catch (err) {
         error(err);
     } finally {

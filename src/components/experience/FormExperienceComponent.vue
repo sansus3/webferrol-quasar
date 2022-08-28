@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="dark">
         <q-input label="Código *" :model-value="code" @update:model-value="newValue => $emit('update:code', newValue)"
             name="code" :rules="[val => val && val.length > 2 || 'Por lo un mínimo de tres caracteres']">
         </q-input>

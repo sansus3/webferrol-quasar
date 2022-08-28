@@ -108,6 +108,14 @@ const onCopyToClipboard = async () => {
                     <q-td>
                         <q-checkbox v-model="selected" :val="props.row" />
                     </q-td>
+                    <q-td>
+                        <q-btn :to="{
+                            name: 'EditExperience', params: {
+                                idDoc: props.row.idDoc
+                            }
+                        }" class="q-mr-xs" color="primary" size="sm" label="Modificar" />
+                        <q-btn @click="handleDelete(props.row)" color="negative" size="sm" label="Eliminar" />
+                    </q-td>
                     <q-td key="code" :props="props">
                         {{ props.row.code }}
                     </q-td>
@@ -128,14 +136,6 @@ const onCopyToClipboard = async () => {
                     </q-td>
                     <q-td key="province" :props="props">
                         {{ props.row.province }}
-                    </q-td>
-                    <q-td>
-                        <q-btn :to="{
-                            name: 'EditExperience', params: {
-                                idDoc: props.row.idDoc
-                            }
-                        }" class="q-mr-xs" color="primary" size="sm" label="Modificar" />
-                        <q-btn @click="handleDelete(props.row)" color="negative" size="sm" label="Eliminar" />
                     </q-td>
                 </q-tr>
             </template>

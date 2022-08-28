@@ -16,19 +16,26 @@ export const useStoreExperiences = defineStore({
             this.experiences = await getDocsOrderBy('dateStart');
         },
         async setupExperience(p_idDoc) {
-            this.experience = null; //Vacíamos por si tenía datos previos
+            this.experience = this.experiences.find(el => el.idDoc === p_idDoc);
+            if (this.experience)
+                return;
             const { getDocument } = useDB('workExperience');
             this.experience = await getDocument(p_idDoc);
         },
-        async updateExperience(p_data) {
+        async updateExperience(p_idDoc, p_data) {
+            //Cargamos cloud firestore
             const { updateDocument } = useDB('workExperience');
-            const idDoc = p_data.idDoc;
-            const $dateStart = new Date(p_data.dateStart);
-            p_data.dateStart = Timestamp.fromDate($dateStart);
+            //Reconstuímos el objeto para almacenar sólo los datos que nos interesan
+            let { code, title, jobTitle, province, place, comments, dateStart, dateEnd } = p_data;
+            const $data = { code, title, jobTitle, province, place, comments, dateStart, dateEnd };
+            //Preparamos el formato de fecha para us almacenamiento            
+            const $dateStart = new Date($data.dateStart);//Convertimos String (dd-mm-aaaa) a Date
+            p_data.dateStart = $data.dateStart = Timestamp.fromDate($dateStart);
             const $dateEnd = new Date(p_data.dateEnd);
-            p_data.dateEnd = Timestamp.fromDate($dateEnd);
-            await updateDocument(idDoc, p_data);
-            const index = this.experiences.findIndex(el => el.idDoc === p_data.idDoc);
+            p_data.dateEnd = $data.dateEnd = Timestamp.fromDate($dateEnd);
+            //Actualización de los campos
+            await updateDocument(p_idDoc, $data);
+            const index = this.experiences.findIndex(el => el.idDoc === p_idDoc);
             if (index > -1)
                 this.experiences[index] = p_data;
 
