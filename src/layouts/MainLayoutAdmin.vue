@@ -39,9 +39,9 @@
                     </q-item-section>
 
                     <q-item-section>
-                        <q-item-label>{{ store.user?.displayName ?? '' }}</q-item-label>
+                        <q-item-label>{{  store.user?.displayName ?? ''  }}</q-item-label>
                         <q-item-label caption>
-                            {{ store.user?.email ?? '' }}
+                            {{  store.user?.email ?? ''  }}
                         </q-item-label>
                     </q-item-section>
                 </q-item>
@@ -49,7 +49,7 @@
                 <q-item>
                     <q-item-section>
                         <q-badge outline text-color="blue-grey-13">
-                            <span class="q-pa-xs">{{ store.getLastLoginAt ?? '' }}</span>
+                            <span class="q-pa-xs">{{  store.getLastLoginAt ?? ''  }}</span>
                         </q-badge>
                     </q-item-section>
                     <q-item-section>
@@ -57,6 +57,10 @@
                             Logout
                         </q-btn>
                     </q-item-section>
+                </q-item>
+                <q-separator />
+                <q-item>
+                    <dark-mode></dark-mode>
                 </q-item>
             </q-card>
         </q-drawer>
@@ -83,7 +87,7 @@
 import { ref } from 'vue'
 import { useStoreUsers } from 'src/stores/users';
 import { useRouter } from 'vue-router';
-import EssentialLink from '../components/EssentialLink.vue';
+import DarkMode from '../components/DarkMode.vue';
 const store = useStoreUsers();
 const router = useRouter();
 const rightDrawerOpen = ref(false)
