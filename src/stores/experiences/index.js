@@ -25,9 +25,9 @@ export const useStoreExperiences = defineStore({
         async updateExperience(p_idDoc, p_data) {
             //Cargamos cloud firestore
             const { updateDocument } = useDB('workExperience');
-            //Reconstuímos el objeto para almacenar sólo los datos que nos interesan
-            let { code, title, jobTitle, province, place, comments, dateStart, dateEnd } = p_data;
-            const $data = { code, title, jobTitle, province, place, comments, dateStart, dateEnd };
+            //Reconstruímos el objeto para almacenar sólo los datos que nos interesan
+            let { code, title, jobTitle, province, place, comments, dateStart, dateEnd, is_certificado_profesionalidad } = p_data;
+            const $data = { code, title, jobTitle, province, place, comments, dateStart, dateEnd, is_certificado_profesionalidad };
             //Preparamos el formato de fecha para us almacenamiento            
             const $dateStart = new Date($data.dateStart);//Convertimos String (dd-mm-aaaa) a Date
             p_data.dateStart = $data.dateStart = Timestamp.fromDate($dateStart);

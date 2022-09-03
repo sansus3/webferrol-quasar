@@ -20,6 +20,7 @@ const idDocRepeat = ref('');//Variable para confirmar experiencia a eliminar
 const experience = ref(null);//Datos de una experiencia para eliminar
 
 const columns = [
+    { name: 'options', align: 'center', label: 'Opciones', field: 'option', sortable: false },
     { name: 'code', align: 'left', label: 'Código', field: 'code', sortable: true },
     {
         name: 'title',
@@ -117,7 +118,7 @@ const onCopyToClipboard = async () => {
                         <q-btn @click="handleDelete(props.row)" color="negative" size="sm" label="Eliminar" />
                     </q-td>
                     <q-td key="code" :props="props">
-                        {{ props.row.code }}
+                        <span v-if="props.row?.is_certificado_profesionalidad"> &reg; </span>{{ props.row.code }}
                     </q-td>
                     <q-td key="title" :props="props">
                         {{ props.row.title }}

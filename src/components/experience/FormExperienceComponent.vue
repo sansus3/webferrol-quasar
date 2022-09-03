@@ -8,6 +8,10 @@
             name="title" :rules="[val => val && val.length > 2 || 'Por lo un mínimo de tres caracteres']">
         </q-input>
 
+        <q-checkbox label="Certificado de profesionalidad" :model-value="is_certificado_profesionalidad"
+            name="is_certificado_profesionalidad"
+            @update:model-value="newValue => $emit('update:is_certificado_profesionalidad', newValue)"></q-checkbox>
+
         <q-input label="Cargo *" :model-value="jobTitle"
             @update:model-value="newValue => $emit('update:jobTitle', newValue)" name="title"
             :rules="[val => val && val.length > 2 || 'Por lo un mínimo de tres caracteres']">
@@ -42,7 +46,7 @@
 </template>
 
 <script setup>
-const props = defineProps(['code', 'title', 'jobTitle', 'dateStart', 'dateEnd', 'place', 'province', 'comments']);
+const props = defineProps(['code', 'title', 'jobTitle', 'dateStart', 'dateEnd', 'place', 'province', 'comments', 'is_certificado_profesionalidad']);
 const toolbar = [
     ['left', 'center', 'right', 'justify'],
     ['bold', 'italic', 'underline'],

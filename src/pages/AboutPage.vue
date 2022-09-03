@@ -21,7 +21,12 @@
                             </q-item>
                             <q-item>
                                 <q-item-section>
-                                    <q-item-label><span class="text-subtitle2">{{ item.code }}</span></q-item-label>
+                                    <q-item-label><span class="text-subtitle2">{{ item.code }}</span>
+                                        <q-chip v-if="item?.is_certificado_profesionalidad" size="xs" dense
+                                            class="glossy" color="white" text-color="red" icon="star">
+                                            Certificado de profesionalidad
+                                        </q-chip>
+                                    </q-item-label>
                                 </q-item-section>
                             </q-item>
                         </q-list>

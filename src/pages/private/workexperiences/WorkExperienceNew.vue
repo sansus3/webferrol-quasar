@@ -19,6 +19,7 @@ const data = {
     place: '',
     province: '',
     comments: '',
+    is_certificado_profesionalidad: false,
 }
 
 const form = ref({ ...data })
@@ -50,7 +51,8 @@ const handleSubmit = async () => {
         <q-form autofocus @reset="handleReset" @submit.prevent="handleSubmit">
             <FormExperience v-model:code="form.code" v-model:title="form.title" v-model:jobTitle="form.jobTitle"
                 v-model:dateStart="form.dateStart" v-model:dateEnd="form.dateEnd" v-model:place="form.place"
-                v-model:province="form.province" v-model:comments="form.comments">
+                v-model:province="form.province" v-model:comments="form.comments"
+                v-model:is_certificado_profesionalidad="form.is_certificado_profesionalidad">
             </FormExperience>
             <q-btn-group push class="q-mt-xl">
                 <q-btn icon="add" :loading="disable" :disable="disable" label="Nueva experiencia" type="submit"
